@@ -12,6 +12,7 @@ Ntw::Ntw(MainWindow* wnd)
 
     //connect(udpSocket, SIGNAL(readyRead()),
     //        this, SLOT(processPendingDatagrams()));
+    datagram = new ANC_MSG();
 }
 
 Ntw::~Ntw()
@@ -19,6 +20,7 @@ Ntw::~Ntw()
     if(udpSocket->isOpen())
         udpSocket->abort();
     delete udpSocket;
+    delete datagram;
 }
 
 void Ntw::processPendingDatagrams()
@@ -36,15 +38,15 @@ void Ntw::processPendingDatagrams()
         //datagram.resize(udpSocket->pendingDatagramSize());
         //udpSocket->readDatagram(datagram.data(), datagram.size(), &sender, &senderPort);
 
-        sizeDatagramRead = udpSocket->readDatagram((char *)&datagram, (qint64)sizeof(ANC_MSG), &sender, &senderPort);
+        sizeDatagramRead = udpSocket->readDatagram((char *)datagram, (qint64)sizeof(ANC_MSG), &sender, &senderPort);
         //qint64 readDatagram(char *data, qint64 maxlen, QHostAddress *host = 0, quint16 *port = 0);
 
-        anchor_number = datagram.addr;
-        sync_series_number = datagram.sync_n;
+        anchor_number = datagram->addr;
+        sync_series_number = datagram->sync_n;
 
         //if datagram code is data packet signature then go to processing datagram
-        if(datagram.code == ANC_REP_CODE && datagram.length>0)
-            mainWindow->getAlg()->ProcessAnchorDatagram(&datagram, &retPoint);
+        if(datagram->code == ANC_REP_CODE && datagram->length>0)
+            mainWindow->getAlg()->ProcessAnchorDatagram(datagram, &retPoint);
 
         mainWindow->SetOutput(tr("Anchor: %1").arg(anchor_number),tr("Sync series_number: %1").arg(sync_series_number),tr("Anchor X: %1").arg(retPoint.x),
                               tr("Anchor Y: %1").arg(retPoint.y),tr("Anchor Z: %1").arg(retPoint.z));

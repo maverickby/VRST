@@ -13,6 +13,7 @@ class MainWindow;
 QT_BEGIN_NAMESPACE
 class QUdpSocket;
 class QAction;
+//class ANC_MSG;
 QT_END_NAMESPACE
 
 
@@ -28,7 +29,7 @@ private:
 
     QUdpSocket* udpSocket;
     MainWindow* mainWindow;
-    ANC_MSG  datagram;// received UDP packet
+    ANC_MSG*  datagram;// received UDP packet
 private slots:
     void processPendingDatagrams();
 };

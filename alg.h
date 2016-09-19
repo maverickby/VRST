@@ -2,7 +2,6 @@
 #define ALG_H
 
 #include <QByteArray>
-//#include <cstdint>
 
 typedef struct
 {
@@ -58,7 +57,7 @@ typedef struct
                            {5, 0, 0}
                           };*/
 
-POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
+/*POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
                            {0, 0, 2.41},
                            {3.02, 0, 2.41},
                            {3.02, 3.02, 2.41},
@@ -69,7 +68,7 @@ POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
                            {0, 3.02, 0}
                           };
 
-double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};
+double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};*/
 
 
 /*
@@ -93,6 +92,7 @@ public:
     void process_nav(void);
     int prepare_data(int tag);
     double find_max_m(void);
+    void anc_dist(void);
 private:
     int64 t_marks[TAGS_NUMBER][ANCHORS_NUMBER];		//time delay marks array 15x8 (picoseconds)
     double  m_marks[ANCHORS_NUMBER];                   // prepared deltas for one tag

@@ -2,6 +2,19 @@
 #include <cmath>
 #include <QDebug>
 
+POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
+                           {0, 0, 2.41},
+                           {3.02, 0, 2.41},
+                           {3.02, 3.02, 2.41},
+                           {0, 3.02, 2.41},
+                           {0, 0, 0},
+                           {3.02, 0, 0},
+                           {3.02, 3.02, 0},
+                           {0, 3.02, 0}
+                          };
+
+double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};
+
 Alg::Alg()
 {
     init();
@@ -48,7 +61,7 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 // get new data for the ancor
      if(datagram->sync_n == sync_series)
      {
-// copy marks
+       // copy marks
        for(i = 0; i < TAGS_NUMBER; i++)
          memcpy((char *)&t_marks[i][datagram->addr], datagram->time_mark[i], 5);
      }
@@ -77,10 +90,20 @@ void Alg::process_nav(void)
        {
          //disp_data(i, m_marks);   // tag - 0, 1..
 // call navigation algorithm here
-         if(bancroft(i) > 0)
-            disp_loacation(i, tag[i].x, tag[i].y, tag[i].z);
+         //if(bancroft(i) > 0)
+            //disp_loacation(i, tag[i].x, tag[i].y, tag[i].z);
        }
     }
+}
+
+// distance ancor i to sync ancor 0 in DWT_TIME_UNITS
+void Alg::anc_dist(void)
+{
+    int i;
+    for(i = 0; i < ANCHORS_NUMBER; i++)
+        anc0dist[i] = sqrt(pow(anchor[i].x - anchor[0].x, 2) +
+                           pow(anchor[i].y - anchor[0].y, 2) +
+                           pow(anchor[i].z - anchor[0].z, 2)) / SPEED_OF_LIGHT / DWT_TIME_UNITS;
 }
 
 // ************  Time marks normalisation functions
@@ -90,7 +113,7 @@ double Alg::find_max_m(void)
 {
     double a = m_marks[0];
     int i;
-    for(i = 1; i < N_ANCORS; i ++)
+    for(i = 1; i < ANCHORS_NUMBER; i ++)
         if(m_marks[i] > a)
             a = m_marks[i];
     return(a);

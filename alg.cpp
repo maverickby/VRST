@@ -41,11 +41,24 @@ void Alg::init()
     w[4]=2.41;w[5]=2.41;w[6]=2.41;w[7]=2.41;
 
     pt1 = new POINT3D();
+    pt1->x=pt1->y=pt1->z=0;
     pt2 = new POINT3D();
+    pt2->x=pt2->y=pt2->z=0;
     ptRet = new POINT3D();
+    ptRet->x=ptRet->y=ptRet->z=0;
     p3d = new POINT3D();
+    p3d->x=p3d->y=p3d->z=0;
     sync_series = -1;
     adj = 0;
+    memset(t_marks, 0, sizeof(t_marks));//clear trash in the array (marks)
+    memset(m_marks, 0, sizeof(m_marks));//clear trash in the array
+    memset(anc0dist, 0, sizeof(anc0dist));//clear trash in the array
+
+    memset(anchor, 0, sizeof(anchor));//clear trash in the array
+    memset(tag, 0, sizeof(tag));//clear trash in the array
+    memset(a, 0, sizeof(a));//clear trash in the array
+    memset(a_, 0, sizeof(a_));//clear trash in the array
+    memset(arrT, 0, sizeof(arrT));//clear trash in the array
 }
 
 Alg::~Alg()
@@ -63,10 +76,10 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
     int i, n;
      if(datagram->addr == 0)  // first packet in the series, process previous data
      {
-         //disp_series(datagram->sync_n);		       //display sync_n         
-         process_nav(retPoint);							   //prepare data and do navigation procedure
+         //disp_series(datagram->sync_n);		   //display sync_n
+         process_nav(retPoint);					   //prepare data and do navigation procedure
          memset(t_marks, 0, sizeof(t_marks));	   //clear marks
-         sync_series = datagram->sync_n;			   //new #
+         sync_series = datagram->sync_n;		   //new #
      }
 // get new data for the ancor
      if(datagram->sync_n == sync_series)
@@ -141,7 +154,7 @@ int Alg::prepare_data(int tag)
 {
     int i;
     double a, d0;
-    if(t_marks[tag][0] == 0)  // no data for master ancor
+    if(t_marks[tag][0] == 0)  // no data for master ancрor
         return(0);
 // fix time marks using distance to master	(work)
     for(i = 0; i < ANCHORS_NUMBER; i++)
@@ -183,6 +196,14 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     //POINT3D p3d;
     int l,p,i;    
     double t11,t21,t31,t41,t51,t61,t71,t81;
+    int s,k;
+    int count;
+    int index_anyJ;
+    double u21,u31,u41,v21,v31,v41,w21,w31,w41;
+    double delta21,delta31,delta41,tau12,tau13,tau14,tau32,tau42;
+    double alpha1,alpha2,beta1,beta2,gamma1,gamma2,g1,g2,c;
+    double A,B,C,D,E,F,G,H,I;
+    double zl,xl,yl,xMinus,xPlus,yMinus,yPlus,zMinus,zPlus;
 
     //int64    t_marks[N_TAGS][N_ANCORS];		//time marks
     t11 = (double)t_marks[tag][0];
@@ -193,7 +214,7 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     t61 = (double)t_marks[tag][5];
     t71 = (double)t_marks[tag][6];
     t81 = (double)t_marks[tag][7];
-
+    c=SPEED_OF_LIGHT;
 
     arrT[0]=t11;
     arrT[1]=t21;
@@ -203,39 +224,32 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     arrT[5]=t61;
     arrT[6]=t71;
     arrT[7]=t81;
-    int s,k;
-    int count;
-    double u21,u31,u41,v21,v31,v41,w21,w31,w41;
-    double delta21,delta31,delta41,tau12,tau13,tau14,tau32,tau42;
-    double alpha1,alpha2,beta1,beta2,gamma1,gamma2,g1,g2,c;
-    double A,B,C,D,E,F,G,H,I;
-    double zl,xl,yl,xMinus,xPlus,yMinus,yPlus,zMinus,zPlus;
 
-
-
-
-    if (t11 == t21 == t31 == t41 == t51 == t61 == t71 == t81 == 0)
+    if (t11 == 0 && t21 == 0 && t31 ==0 && t41 ==0 && t51 ==0  && t61 ==0 && t71 == 0 && t81 == 0)
     {
         x = 1.51; y = 1.51; z = 1.205;
         p3d->x = x;p3d->y = y;p3d->z = z;
         return p3d;
     }
 
-    c=SPEED_OF_LIGHT;
-
     a[0] = 1; a[1] = 2; a[2] = 3; a[3] = 4;
     l = 0; p = 4;
-    //7, beging of the main cycle
+
+    //7, begin of the main cycle
     while(p>=1)
     {
-        for (i= 0;i<=3;i++)
+        for (i=0;i<=3;i++)
         {
-            if(getTAi1(i)!= getAnyJinAExcludeAi(i))
+            index_anyJ = getAnyJinAExcludeAi(i);
+            if(arrT[i]!= arrT[index_anyJ])//getTAi1(i)
+            {
                 s = i;
+                goto step15;
+            }
          }
         goto step102;
-        a_[0]=a[s];
-        k=2;
+step15: a_[0]=a[s];
+        k=1;
 
         //17 для каждого j∈{a[1]; a[2]; a[3]; a[4]}\{a[s]}
         getarrJinAExcludeAs(s);
@@ -244,9 +258,11 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
         {
             if(arrJ[count]!=0)
             {
-                a_[k]=arrJ[count];
+                a_[k]=arrJ[count++];
                 k++;
             }
+            else
+                break;
         }
         //21
         u21=u[a_[1]]-u[a_[0]];

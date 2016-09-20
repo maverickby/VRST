@@ -113,7 +113,7 @@ public:
 private:
     int64 t_marks[TAGS_NUMBER][ANCHORS_NUMBER];		//time delay marks array 15x8 (picoseconds)
     double  m_marks[ANCHORS_NUMBER];                   // prepared deltas for one tag
-    POINT3D anchor[ANCHORS_NUMBER];						// ancрor positions (m)
+    POINT3D anchor[ANCHORS_NUMBER];						// anchor positions (m)
     POINT3D tag[TAGS_NUMBER];							// calculated tags coordinates
 
     int a[4];//массив для хранения текущей комбинации 4 из 8 (номера четырех текущих приемников сигнала)

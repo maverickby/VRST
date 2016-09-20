@@ -15,8 +15,14 @@ POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
 
 double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};
 
-Alg::Alg()
+/*Alg::Alg()
 {
+    init();
+}*/
+
+Alg::Alg(MainWindow* wnd)
+{
+    mainWindow = wnd;
     init();
 }
 
@@ -27,16 +33,17 @@ void Alg::init()
         arrJ[i]=0;
     }
 
-    u[0]=0;u[1]=0;u[2]=10;u[3]=10;
-    u[4]=0;u[1]=0;u[2]=10;u[3]=10;
-    v[0]=0;v[1]=10;v[2]=10;v[3]=0;
-    v[4]=0;v[1]=10;v[2]=10;v[3]=0;
+    u[0]=0;u[1]=0;u[2]=3.02;u[3]=3.02;
+    u[4]=0;u[5]=0;u[6]=3.02;u[7]=3.02;
+    v[0]=0;v[1]=3.02;v[2]=3.02;v[3]=0;
+    v[4]=0;v[5]=3.02;v[6]=3.02;v[7]=0;
     w[0]=0;w[1]=0;w[2]=0;w[3]=0;
-    w[4]=2.5;w[1]=2.5;w[2]=2.5;w[3]=2.5;
+    w[4]=2.41;w[5]=2.41;w[6]=2.41;w[7]=2.41;
 
     pt1 = new POINT3D();
     pt2 = new POINT3D();
     ptRet = new POINT3D();
+    p3d = new POINT3D();
     sync_series = -1;
     adj = 0;
 }
@@ -46,15 +53,18 @@ Alg::~Alg()
    delete pt1;
    delete pt2;
    delete ptRet;
+   delete pt1;
+   delete pt2;
+   delete p3d;
 }
 
 bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 {
     int i, n;
-     if(datagram->addr == 0)  // first packed in series, process previos data
+     if(datagram->addr == 0)  // first packet in the series, process previous data
      {
-         //disp_series(datagram->sync_n);		       //display sync_n
-         process_nav();							   //prepare data and do navigation procedure (bancroft here)
+         //disp_series(datagram->sync_n);		       //display sync_n         
+         process_nav(retPoint);							   //prepare data and do navigation procedure
          memset(t_marks, 0, sizeof(t_marks));	   //clear marks
          sync_series = datagram->sync_n;			   //new #
      }
@@ -65,7 +75,7 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
        for(i = 0; i < TAGS_NUMBER; i++)
          memcpy((char *)&t_marks[i][datagram->addr], datagram->time_mark[i], 5);
      }
-//check for sensors data
+//check for sensors data, NOT IMPLEMENTED YET
      if(datagram->length > (TAGS_NUMBER * 5))
      {/*
          n = datagram->sd_tag;
@@ -78,10 +88,12 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
                 n = 0;
          }*/
      }
+
+    //retPoint = DirectCalculationMethod(double t11,double t21,double t31,double t41,double t51,double t61,double t71,double t81);
     return true;
 }
 
-void Alg::process_nav(void)
+void Alg::process_nav(POINT3D* retPoint)
 {
     int i, j;
     for(i = 0; i < TAGS_NUMBER; i++)         // 0..14
@@ -89,9 +101,10 @@ void Alg::process_nav(void)
        if(prepare_data(i))
        {
          //disp_data(i, m_marks);   // tag - 0, 1..
-// call navigation algorithm here
+         //call navigation algorithm here
          //if(bancroft(i) > 0)
             //disp_loacation(i, tag[i].x, tag[i].y, tag[i].z);
+           retPoint = DirectCalculationMethod(i);
        }
     }
 }
@@ -164,11 +177,24 @@ int Alg::prepare_data(int tag)
     return(1);
 }
 
-POINT3D Alg::DirectCalculationMethod(double t11,double t21,double t31,double t41,double t51,double t61,double t71,double t81)
+POINT3D* Alg::DirectCalculationMethod(int tag)
 {
     double x,y,z;
-    POINT3D p3d;
-    int l,p,i;
+    //POINT3D p3d;
+    int l,p,i;    
+    double t11,t21,t31,t41,t51,t61,t71,t81;
+
+    //int64    t_marks[N_TAGS][N_ANCORS];		//time marks
+    t11 = (double)t_marks[tag][0];
+    t21 = (double)t_marks[tag][1];
+    t31 = (double)t_marks[tag][2];
+    t41 = (double)t_marks[tag][3];
+    t51 = (double)t_marks[tag][4];
+    t61 = (double)t_marks[tag][5];
+    t71 = (double)t_marks[tag][6];
+    t81 = (double)t_marks[tag][7];
+
+
     arrT[0]=t11;
     arrT[1]=t21;
     arrT[2]=t31;
@@ -186,10 +212,12 @@ POINT3D Alg::DirectCalculationMethod(double t11,double t21,double t31,double t41
     double zl,xl,yl,xMinus,xPlus,yMinus,yPlus,zMinus,zPlus;
 
 
+
+
     if (t11 == t21 == t31 == t41 == t51 == t61 == t71 == t81 == 0)
     {
-        x = 5; y = 5; z = 1.25;
-        p3d.x = x;p3d.y = y;p3d.z = z;
+        x = 1.51; y = 1.51; z = 1.205;
+        p3d->x = x;p3d->y = y;p3d->z = z;
         return p3d;
     }
 
@@ -197,7 +225,7 @@ POINT3D Alg::DirectCalculationMethod(double t11,double t21,double t31,double t41
 
     a[0] = 1; a[1] = 2; a[2] = 3; a[3] = 4;
     l = 0; p = 4;
-
+    //7, beging of the main cycle
     while(p>=1)
     {
         for (i= 0;i<=3;i++)
@@ -373,7 +401,7 @@ step102: if(a[3]==8)
       //z+=z[i];
     z=z/l;
 
-    p3d.x = x;p3d.y = y;p3d.z = z;
+    p3d->x = x;p3d->y = y;p3d->z = z;
     return p3d;
 }
 

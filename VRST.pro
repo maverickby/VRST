@@ -20,6 +20,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     ntw.h \
-    alg.h
+    alg.h \
+    datagram.h
 
 FORMS    += mainwindow.ui

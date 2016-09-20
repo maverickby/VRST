@@ -31,16 +31,20 @@ MainWindow::MainWindow(QWidget *parent) :
     startButton = new QPushButton(tr("&Start"));
 
     buttonLayout = new QHBoxLayout;
-    buttonLayout->addStretch(1);
+    //buttonLayout->addStretch(1);
     buttonLayout->addWidget(startButton);
     buttonLayout->addWidget(stopButton);
-    buttonLayout->addStretch(1);
+    //buttonLayout->addStretch(1);
 
     mainLayout = new QVBoxLayout;
-    //mainLayout->addWidget(statusLabel);
     mainLayout->addLayout(statuslabelLayout);
     mainLayout->addLayout(AnchorlabelLayout);
     mainLayout->addLayout(buttonLayout);
+
+    //mainLayout->setAlignment(statuslabelLayout,Qt::AlignLeft);
+    //mainLayout->setAlignment(AnchorlabelLayout,Qt::AlignLeft);
+    mainLayout->setAlignment(buttonLayout,Qt::AlignRight);
+
     setLayout(mainLayout);
 
     stopButton->setDisabled(true);
@@ -48,13 +52,14 @@ MainWindow::MainWindow(QWidget *parent) :
     //Технология пространственного трекинга для систем виртуальной реальности (VR)
     setWindowTitle(tr("VRST"));//VR space tracking
 
-    resize(240,120);
+    resize(480,160);
     setFixedSize(this->size());
 
     //start network
     ntw = new Ntw(this);
     //create algorithm instance
-    alg = new Alg();
+    alg = new Alg(this);
+    //alg = new Alg();
 
     connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
     connect(startButton, SIGNAL(clicked()), this, SLOT(start()));
@@ -98,10 +103,10 @@ void MainWindow::stop()
 void MainWindow::SetOutput(QString txt,QString txt2,QString txt3,QString txt4,QString txt5)
 {
     SetLabelText(txt);
-    SetLabelText(txt2);
+    SetLabelText2(txt2);
     SetLabelTextAnchorXLabel(txt3);
-    SetLabelTextAnchorXLabel(txt4);
-    SetLabelTextAnchorXLabel(txt5);
+    SetLabelTextAnchorYLabel(txt4);
+    SetLabelTextAnchorZLabel(txt5);
 }
 
 void MainWindow::SetLabelText(QString txt)

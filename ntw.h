@@ -6,7 +6,8 @@
 #include <QMainWindow>
 
 #include "mainwindow.h"
-#include "alg.h"
+//#include "alg.h"
+#include "datagram.h"
 
 class MainWindow;
 

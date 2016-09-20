@@ -1,7 +1,19 @@
 #ifndef ALG_H
 #define ALG_H
 
-#include <QByteArray>
+/*#include <QByteArray>
+#include <QMainWindow>
+
+#include "mainwindow.h"
+
+class MainWindow;*/
+
+#include "mainwindow.h"
+
+class MainWindow;
+
+
+#include "datagram.h"
 
 typedef struct
 {
@@ -9,7 +21,7 @@ typedef struct
 } POINT3D;
 
 //маяки - передатчики
-#define TAGS_NUMBER 15
+//#define TAGS_NUMBER 15
 
 //якоря - премники/передатчики
 #define ANCHORS_NUMBER 8
@@ -23,13 +35,15 @@ typedef struct
 typedef unsigned char uint8;
 typedef long long     int64;
 
+/*
 // gyroscope and accelerometer sensor data
 typedef struct
 {
     short ax, ay, az;  // accelerometer
     short gx, gy, gz;  // gyroscope
-}G_A_DATA;
+}G_A_DATA;*/
 
+/*
 // anchor report
 typedef struct
 {
@@ -44,7 +58,7 @@ typedef struct
   uint8  sd_tag;					   // sensor data (accel+gyro) tag #
   uint8  sd_tags;					   // number of sensor data blocks
   G_A_DATA  sens_data[TAGS_NUMBER];         // max, in reality packet contains data for 2..3 tags (sd_tag, sd_tag+1, ..)
-} ANC_MSG;
+} ANC_MSG;*/
 
 /*POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
                            {0, 0, 2.5},
@@ -72,24 +86,27 @@ double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};*/
 
 
 /*
- * This class is intended for math processing of the input messages from 8 anchors as series od time delays in picoseconds
+ * This class is intended for math processing of the input messages from 8 anchors as series of time delays in picoseconds
 */
-class Alg
+class Alg: public QObject
 {
+    Q_OBJECT
 public:
-    Alg();
+    //Alg();
+    Alg(MainWindow* wnd = 0);
     virtual ~Alg();
 
     void init();
 
-    POINT3D DirectCalculationMethod(double t11,double t21,double t31,double t41,double t51,double t61,double t71,double t81);
+    POINT3D* DirectCalculationMethod(int tag);
+
     int getTAi1(int i);
     int getAnyJinAExcludeAi(int i);
     bool getarrJinAExcludeAs(int s);
     int getTA_JK(int j,int k);
     bool Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet);
     bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint);
-    void process_nav(void);
+    void process_nav(POINT3D* retPoint);
     int prepare_data(int tag);
     double find_max_m(void);
     void anc_dist(void);
@@ -116,6 +133,8 @@ private:
     POINT3D* pt1;
     POINT3D* pt2;
     POINT3D* ptRet;
+    POINT3D* p3d;
+    MainWindow* mainWindow;
 };
 
 #endif // ALG_H

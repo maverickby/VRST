@@ -120,8 +120,8 @@ private:
              //(4-х элементное подмножество из множества чисел {1...8})
     int a_[4];//дополнительный массив
     double arrT[ANCHORS_NUMBER];//массив времен задержек
-    int arrJ[4];//массив для хранения индексов j
-    int      sync_series;// series control
+    int arrJ[3];//массив для хранения индексов массива a[] за исключением индекса элемента a[s]
+    int sync_series;// series control
     int adj;// adjustment mode to set anchors antennas delays
     double anc0dist[ANCHORS_NUMBER];//distance ancor[i] to ancor[0]
 

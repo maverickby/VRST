@@ -154,7 +154,7 @@ int Alg::prepare_data(int tag)
 {
     int i;
     double a, d0;
-    if(t_marks[tag][0] == 0)  // no data for master ancрor
+    if(t_marks[tag][0] == 0)  //no data for master anchor
         return(0);
 // fix time marks using distance to master	(work)
     for(i = 0; i < ANCHORS_NUMBER; i++)
@@ -176,9 +176,11 @@ int Alg::prepare_data(int tag)
             m_marks[i] += MAX_T5;
          if(m_marks[i])	   // 0 = no data
          {
-// to meters
-// array ant_delay  - in meters
-           m_marks[i] = m_marks[i] * SPEED_OF_LIGHT * DWT_TIME_UNITS + ant_delay[i];
+            // to seconds
+            // array ant_delay  - meters
+           //здесь разницы времен получения сигнала от маяка до i-го передатчика относительно
+           //первого передатчика, в секундах (пикосекундах)
+           m_marks[i] = m_marks[i] * /*SPEED_OF_LIGHT **/ DWT_TIME_UNITS + ant_delay[i]/SPEED_OF_LIGHT;
            if(i == 0)
              d0 = m_marks[0];
 // change absolute marks  to delta (mark[i] - mark[0])
@@ -206,14 +208,25 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     double zl,xl,yl,xMinus,xPlus,yMinus,yPlus,zMinus,zPlus;
 
     //int64    t_marks[N_TAGS][N_ANCORS];		//time marks
-    t11 = (double)t_marks[tag][0];
+    /*t11 = (double)t_marks[tag][0];
     t21 = (double)t_marks[tag][1];
     t31 = (double)t_marks[tag][2];
     t41 = (double)t_marks[tag][3];
     t51 = (double)t_marks[tag][4];
     t61 = (double)t_marks[tag][5];
     t71 = (double)t_marks[tag][6];
-    t81 = (double)t_marks[tag][7];
+    t81 = (double)t_marks[tag][7];*/
+
+    //здесь разницы времен получения сигнала от маяка до i-го передатчика относительно
+    //первого передатчика, в секундах (пикосекундах)
+    t11 = m_marks[0];
+    t21 = m_marks[1];
+    t31 = m_marks[2];
+    t41 = m_marks[3];
+    t51 = m_marks[4];
+    t61 = m_marks[5];
+    t71 = m_marks[6];
+    t81 = m_marks[7];
     c=SPEED_OF_LIGHT;
 
     arrT[0]=t11;
@@ -232,16 +245,16 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
         return p3d;
     }
 
-    a[0] = 1; a[1] = 2; a[2] = 3; a[3] = 4;
-    l = 0; p = 4;
+    a[0] = 0; a[1] = 1; a[2] = 2; a[3] = 3;//индексы приемников, начиная с 0
+    l = 0; p = 3;
 
     //7, begin of the main cycle
-    while(p>=1)
+    while(p>=0)
     {
         for (i=0;i<=3;i++)
         {
             index_anyJ = getAnyJinAExcludeAi(i);
-            if(arrT[i]!= arrT[index_anyJ])//getTAi1(i)
+            if(arrT[a[i]] != arrT[index_anyJ])//getTAi1(i)
             {
                 s = i;
                 goto step15;
@@ -251,29 +264,24 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
 step15: a_[0]=a[s];
         k=1;
 
-        //17 для каждого j∈{a[1]; a[2]; a[3]; a[4]}\{a[s]}
-        getarrJinAExcludeAs(s);
-        count=0;
-        while(count<4)
+        //17
+        //для каждого j∈{a[1]; a[2]; a[3]; a[4]}\{a[s]}
+        getarrJinAExcludeAs(s);// get arrJ[] here
+        for( int x=0;x<3;x++)//0..2 потому что множество элементов a[] минус a[s]
         {
-            if(arrJ[count]!=0)
-            {
-                a_[k]=arrJ[count++];
-                k++;
-            }
-            else
-                break;
+            a_[k]=arrJ[x];
+                k++;           
         }
         //21
         u21=u[a_[1]]-u[a_[0]];
         u31=u[a_[2]]-u[a_[0]];
-        u41=u[a_[3]]-u[a_[1]];
+        u41=u[a_[3]]-u[a_[0]];
         v21=v[a_[1]]-v[a_[0]];
         v31=v[a_[2]]-v[a_[0]];
-        v41=v[a_[3]]-v[a_[1]];
+        v41=v[a_[3]]-v[a_[0]];
         w21=w[a_[1]]-w[a_[0]];
         w31=w[a_[2]]-w[a_[0]];
-        w41=w[a_[3]]-w[a_[1]];
+        w41=w[a_[3]]-w[a_[0]];
         delta21=u[a_[1]]*u[a_[1]]+v[a_[1]]*v[a_[1]]+w[a_[1]]*w[a_[1]]-
                 (u[a_[0]]*u[a_[0]]+v[a_[0]]*v[a_[0]]+w[a_[0]]*w[a_[0]]);
         delta31=u[a_[2]]*u[a_[2]]+v[a_[2]]*v[a_[2]]+w[a_[2]]*w[a_[2]]-
@@ -288,13 +296,13 @@ step15: a_[0]=a[s];
         tau42= arrT[a_[3]]- arrT[a_[1]];
 
         alpha1=tau12*u31-tau13*u21;
-        alpha1=tau12*u41-tau14*u21;
+        alpha2=tau12*u41-tau14*u21;
         beta1=tau12*v31-tau13*v21;
         beta2=tau12*v41-tau14*v21;
 
         if( (alpha1*beta2-alpha2*beta1) == 0)
             goto step102;
-
+        //45
         gamma1=tau12*w31-tau13*w21;
         gamma2=tau12*w41-tau14*w21;
         g1=(c*c*tau12*tau13*tau32 + tau12*delta31 - tau13*delta21)/2;
@@ -316,14 +324,14 @@ step15: a_[0]=a[s];
             zl=-I/H;
             xl=A*zl+B;
             yl=C*zl+D;
-            //надо ли ?
+            //надо ли ? надо !
             x+=xl;
             y+=yl;
             z+=zl;
             /////////
             goto step102;
         }
-
+        //65
         if(H==0 || (((H/(2*G))*(H/(2*G))-I/G)<0) )
             goto step102;
         zMinus=-(H/(2*G))-sqrt(((H/(2*G))*(H/(2*G))-I/G));
@@ -398,10 +406,10 @@ step15: a_[0]=a[s];
 step102: if(a[3]==8)
             p--;
         else
-            p=4;
-        if(p>=1)
+            p=3;
+        if(p>=0)
         {
-            for(int i=4;i>p;i--)
+            for(int i=3;i>=p;i--)
                 a[i]=a[p]+i-p+1;
         }
 
@@ -427,7 +435,7 @@ bool Alg::Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet)
     double di1,dj1,di2,dj2;
     double tij;
 
-    s1=s2=0;
+    s1=0;s2=0;
 
     for(int i=0;i<7;i++)
     {
@@ -482,7 +490,8 @@ bool Alg::Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet)
     }
 }
 
-//получить время задержки относительно передатчика 1 из массива arrT
+//получить время задержки относительно передатчика 1 из массива arrT,
+//используя индекс i из массива a[]
 int Alg::getTAi1(int i)
 {
     if(i<0 || i>3)
@@ -491,7 +500,7 @@ int Alg::getTAi1(int i)
         return -1;
     }
     else
-        return arrT[i];
+        return arrT[a[i]];//брать a[i] как индекс для arrT !
 }
 
 //получить произвольное время задержки из массива a_[]
@@ -508,7 +517,7 @@ int Alg::getTA_JK(int j,int k)
     }
 }
 
-//вернуть j ∈{a[1]; a[2]; a[3]; a[4]}\{a[i]}
+//вернуть j ∈{a[1]; a[2]; a[3]; a[4]} \ {a[i]}
 int Alg::getAnyJinAExcludeAi(int i)
 {
     if(i<0 || i>3)
@@ -541,7 +550,6 @@ bool Alg::getarrJinAExcludeAs(int s)
                arrJ[indJ]=a[i];
                indJ++;
            }
-
         return true;
     }
 }

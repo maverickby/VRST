@@ -48,8 +48,10 @@ void Ntw::processPendingDatagrams()
         if(datagram->code == ANC_REP_CODE && sizeDatagramRead>0)
             mainWindow->getAlg()->ProcessAnchorDatagram(datagram, &retPoint);
 
-        mainWindow->SetOutput(tr("Anchor: %1").arg(anchor_number),tr("Sync series_number: %1").arg(sync_series_number),tr("Anchor X: %1").arg(retPoint.x),
-                              tr("Anchor Y: %1").arg(retPoint.y),tr("Anchor Z: %1").arg(retPoint.z));
+        //mainWindow->SetOutput(tr("Anchor: %1").arg(anchor_number),tr("Sync series_number: %1").arg(sync_series_number),tr("Anchor X: %1").arg(retPoint.x),
+          //                    tr("Anchor Y: %1").arg(retPoint.y),tr("Anchor Z: %1").arg(retPoint.z));
+        mainWindow->SetLabelText(tr("Anchor: %1").arg(anchor_number));
+        mainWindow->SetLabelText2(tr("Sync series_number: %1").arg(sync_series_number));
     }
 }
 

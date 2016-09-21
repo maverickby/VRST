@@ -77,7 +77,7 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
      if(datagram->addr == 0)  // first packet in the series, process previous data
      {
          //disp_series(datagram->sync_n);		   //display sync_n
-         process_nav(retPoint);					   //prepare data and do navigation procedure
+         process_nav(datagram, retPoint); //prepare data and do navigation procedure
          memset(t_marks, 0, sizeof(t_marks));	   //clear marks
          sync_series = datagram->sync_n;		   //new #
      }
@@ -106,7 +106,7 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
     return true;
 }
 
-void Alg::process_nav(POINT3D* retPoint)
+void Alg::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 {
     int i, j;
     for(i = 0; i < TAGS_NUMBER; i++)         // 0..14
@@ -118,6 +118,8 @@ void Alg::process_nav(POINT3D* retPoint)
          //if(bancroft(i) > 0)
             //disp_loacation(i, tag[i].x, tag[i].y, tag[i].z);
            retPoint = DirectCalculationMethod(i);
+           mainWindow->SetOutput(tr("Anchor: %1").arg(datagram->addr),tr("Sync series_number: %1").arg(datagram->sync_n),tr("Anchor X: %1").arg(retPoint->x),
+                                 tr("Anchor Y: %1").arg(retPoint->y),tr("Anchor Z: %1").arg(retPoint->z));
        }
     }
 }

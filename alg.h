@@ -106,7 +106,7 @@ public:
     int getTA_JK(int j,int k);
     bool Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet);
     bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint);
-    void process_nav(POINT3D* retPoint);
+    void process_nav(const ANC_MSG* datagram, POINT3D* retPoint);
     int prepare_data(int tag);
     double find_max_m(void);
     void anc_dist(void);

@@ -60,7 +60,7 @@ typedef struct
   G_A_DATA  sens_data[TAGS_NUMBER];         // max, in reality packet contains data for 2..3 tags (sd_tag, sd_tag+1, ..)
 } ANC_MSG;*/
 
-/*POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
+/*POINT3D anchor_dflt[ANCHORS_NUMBER] = {				//default anchor positions
                            {0, 0, 2.5},
                            {0, 0, 0},
                            {0, 5, 2.5},
@@ -71,7 +71,7 @@ typedef struct
                            {5, 0, 0}
                           };*/
 
-/*POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
+/*POINT3D anchor_dflt[ANCHORS_NUMBER] = {				//default anchor positions
                            {0, 0, 2.41},
                            {3.02, 0, 2.41},
                            {3.02, 3.02, 2.41},
@@ -82,7 +82,7 @@ typedef struct
                            {0, 3.02, 0}
                           };
 
-double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};*/
+double ant_delay[ANCHORS_NUMBER] ={0.05,0.52,1.55,0.45,1,0.96,0.75,0.69};*/
 
 
 /*
@@ -123,7 +123,8 @@ private:
     int arrJ[3];//массив для хранения индексов массива a[] за исключением индекса элемента a[s]
     int sync_series;// series control
     int adj;// adjustment mode to set anchors antennas delays
-    double anc0dist[ANCHORS_NUMBER];//distance ancor[i] to ancor[0]
+    double anc0dist[ANCHORS_NUMBER];//distance anchor[i] to anchor[0]
+	QString file_line_string;
 
     //координаты приемников
     double u[ANCHORS_NUMBER];

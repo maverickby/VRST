@@ -2,7 +2,7 @@
 #include <cmath>
 #include <QDebug>
 
-POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
+POINT3D anchor_dflt[ANCHORS_NUMBER] = {				//default anchor positions
                            {0, 0, 2.41},
                            {3.02, 0, 2.41},
                            {3.02, 3.02, 2.41},
@@ -13,12 +13,12 @@ POINT3D ancor_dflt[ANCHORS_NUMBER] = {				//default ancor positions
                            {0, 3.02, 0}
                           };
 
-double ant_delay[ANCHORS_NUMBER] ={0.5,0.52,1.55,0.45,1,0.96,0.75,0.69};
+double ant_delay[ANCHORS_NUMBER] ={0.05,0.52,1.55,0.45,1,0.96,0.75,0.69};
 
-/*Alg::Alg()
-{
-    init();
-}*/
+#define BUFFER_SIZE 128
+
+#define XY_DIMENSION 3.02
+#define Z_DIMENSION 2.41
 
 Alg::Alg(MainWindow* wnd)
 {
@@ -66,8 +66,6 @@ Alg::~Alg()
    delete pt1;
    delete pt2;
    delete ptRet;
-   delete pt1;
-   delete pt2;
    delete p3d;
 }
 
@@ -81,7 +79,7 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
          memset(t_marks, 0, sizeof(t_marks));	   //clear marks
          sync_series = datagram->sync_n;		   //new #
      }
-// get new data for the ancor
+// get new data for the anchor
      if(datagram->sync_n == sync_series)
      {
        // copy marks
@@ -117,14 +115,33 @@ void Alg::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
          //call navigation algorithm here
          //if(bancroft(i) > 0)
             //disp_loacation(i, tag[i].x, tag[i].y, tag[i].z);
+
            retPoint = DirectCalculationMethod(i);
            mainWindow->SetOutput(tr("Anchor: %1").arg(datagram->addr),tr("Sync series_number: %1").arg(datagram->sync_n),tr("Anchor X: %1").arg(retPoint->x),
                                  tr("Anchor Y: %1").arg(retPoint->y),tr("Anchor Z: %1").arg(retPoint->z));
+		   
+		   char buff[BUFFER_SIZE];
+		   file_line_string.clear();
+		   _itoa_s(datagram->sync_n, buff, 10);
+		   file_line_string = buff;
+		   file_line_string += " ";
+
+		   sprintf(buff, "%f", retPoint->x);
+		   file_line_string += buff;
+		   file_line_string += " ";
+		   sprintf(buff, "%f", retPoint->y);
+		   file_line_string += buff;		   
+		   file_line_string += " ";
+		   sprintf(buff, "%f", retPoint->z);
+		   file_line_string += buff;
+		   file_line_string += '\n';
+
+		   fwrite(file_line_string.toStdString().c_str(), sizeof(char), file_line_string.length(), mainWindow->getCoordFile());
        }
     }
 }
 
-// distance ancor i to sync ancor 0 in DWT_TIME_UNITS
+// distance anchor i to sync anchor 0 in DWT_TIME_UNITS
 void Alg::anc_dist(void)
 {
     int i;
@@ -151,7 +168,7 @@ double Alg::find_max_m(void)
 // check and fix overflow
 // change time from DWT_TIME_UNITS to meters
 // change absolute mark value to delta (markN - mark0)
-// return 0 if no data for master ancor (#0)
+// return 0 if no data for master anchor (#0)
 int Alg::prepare_data(int tag)
 {
     int i;
@@ -188,8 +205,8 @@ int Alg::prepare_data(int tag)
 // change absolute marks  to delta (mark[i] - mark[0])
            m_marks[i] = m_marks[i] - d0;
          }
-         else
-             m_marks[i] = 10;   // set to 10m - will be removed
+         //else
+         //    m_marks[i] = 10;   // set to 10m - will be removed
      }
     return(1);
 }
@@ -197,7 +214,6 @@ int Alg::prepare_data(int tag)
 POINT3D* Alg::DirectCalculationMethod(int tag)
 {
     double x,y,z;
-    //POINT3D p3d;
     int l,p,i;    
     double t11,t21,t31,t41,t51,t61,t71,t81;
     int s,k;
@@ -208,16 +224,6 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     double alpha1,alpha2,beta1,beta2,gamma1,gamma2,g1,g2,c;
     double A,B,C,D,E,F,G,H,I;
     double zl,xl,yl,xMinus,xPlus,yMinus,yPlus,zMinus,zPlus;
-
-    //int64    t_marks[N_TAGS][N_ANCORS];		//time marks
-    /*t11 = (double)t_marks[tag][0];
-    t21 = (double)t_marks[tag][1];
-    t31 = (double)t_marks[tag][2];
-    t41 = (double)t_marks[tag][3];
-    t51 = (double)t_marks[tag][4];
-    t61 = (double)t_marks[tag][5];
-    t71 = (double)t_marks[tag][6];
-    t81 = (double)t_marks[tag][7];*/
 
     //здесь разницы времен получения сигнала от маяка до i-го передатчика относительно
     //первого передатчика, в секундах (пикосекундах)
@@ -326,7 +332,7 @@ step15: a_[0]=a[s];
             zl=-I/H;
             xl=A*zl+B;
             yl=C*zl+D;
-            //надо ли ? надо !
+            //
             x+=xl;
             y+=yl;
             z+=zl;
@@ -339,30 +345,30 @@ step15: a_[0]=a[s];
         zMinus=-(H/(2*G))-sqrt(((H/(2*G))*(H/(2*G))-I/G));
         zPlus=-(H/(2*G))+sqrt(((H/(2*G))*(H/(2*G))-I/G));
         //70
-        if( zPlus<0 || zMinus>2.5 || (zMinus<0 && zPlus>2.5) )
+        if( zPlus<0 || zMinus>Z_DIMENSION || (zMinus<0 && zPlus>Z_DIMENSION) )
             goto step102;
         //73
         xMinus=A*zMinus+B;
         xPlus=A*zPlus+B;
         //75
-        if( (xMinus<0 && xPlus<0) || (xMinus>10 && xPlus>10) ||
-                (xMinus<0 && xPlus>10) || (xPlus<0 && xMinus>10) )
+        if( (xMinus<0 && xPlus<0) || (xMinus>XY_DIMENSION && xPlus>XY_DIMENSION) ||
+                (xMinus<0 && xPlus>XY_DIMENSION) || (xPlus<0 && xMinus>XY_DIMENSION) )
             goto step102;
 
         yMinus=C*zMinus+D;
         yPlus=C*zPlus+D;
-        if( (yMinus<0 && yPlus<0) || (yMinus>10 && yPlus>10) ||
-                (yMinus<0 && yPlus>10) || (yPlus<0 && yMinus>10) )
+        if( (yMinus<0 && yPlus<0) || (yMinus>XY_DIMENSION && yPlus>XY_DIMENSION) ||
+                (yMinus<0 && yPlus>XY_DIMENSION) || (yPlus<0 && yMinus>XY_DIMENSION) )
             goto step102;
         //83
-        if( xMinus<0 || xMinus>10 || yMinus<0 || yMinus>10 ||
-                zMinus<0 || xMinus>2.5 )
+        if( xMinus<0 || xMinus>XY_DIMENSION || yMinus<0 || yMinus>XY_DIMENSION ||
+                zMinus<0 || zMinus>Z_DIMENSION)
         {
             l++;
             xl=xPlus;
             yl=yPlus;
             zl=zPlus;
-            //надо ли ?
+            //
             x+=xl;
             y+=yl;
             z+=zl;
@@ -370,14 +376,14 @@ step15: a_[0]=a[s];
             goto step102;
         }
         //90
-        if( xPlus<0 || xPlus>10 || yPlus<0 || yPlus>10 ||
-                zPlus<0 || zPlus>2.5 )
+        if( xPlus<0 || xPlus>XY_DIMENSION || yPlus<0 || yPlus>XY_DIMENSION ||
+                zPlus<0 || zPlus>Z_DIMENSION )
         {
             l++;
             xl=xMinus;
             yl=yMinus;
             zl=zMinus;
-            //надо ли ?
+            //
             x+=xl;
             y+=yl;
             z+=zl;
@@ -417,15 +423,9 @@ step102: if(a[3]==8)
 
     }//end while
 
-    //for(int i=0;i<l;i++)
-      //x+=x[i];
     x=x/l;
-    //for(int i=0;i<l;i++)
-      //y+=y[i];
     y=y/l;
-    //for(int i=0;i<l;i++)
-      //z+=z[i];
-    z=z/l;
+     z=z/l;
 
     p3d->x = x;p3d->y = y;p3d->z = z;
     return p3d;

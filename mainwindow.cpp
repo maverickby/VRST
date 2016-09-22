@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //create algorithm instance
     alg = new Alg(this);
     //alg = new Alg();
+	file_out = fopen("coordinates_out.txt", "wt");
 
     connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
     connect(startButton, SIGNAL(clicked()), this, SLOT(start()));
@@ -83,6 +84,8 @@ MainWindow::~MainWindow()
     //delete ui;
     delete ntw;
     delete alg;
+	if(file_out)
+		fclose(file_out);
 }
 
 void MainWindow::start()
@@ -91,6 +94,7 @@ void MainWindow::start()
     startButton->setDisabled(true);
     stopButton->setDisabled(false);
     //alg->DirectCalculationMethod();
+	file_out = fopen("coordinates_out.txt", "wt");
 }
 
 void MainWindow::stop()
@@ -98,6 +102,8 @@ void MainWindow::stop()
     ntw->stop();
     startButton->setDisabled(false);
     stopButton->setDisabled(true);
+	if (file_out)
+		fclose(file_out);
 }
 
 void MainWindow::SetOutput(QString txt,QString txt2,QString txt3,QString txt4,QString txt5)

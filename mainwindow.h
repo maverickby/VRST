@@ -9,6 +9,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <stdlib.h>
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include "ntw.h"
@@ -43,7 +44,7 @@ public:
     void SetLabelTextAnchorYLabel(QString txt);
     void SetLabelTextAnchorZLabel(QString txt);
     inline Alg* getAlg(){return alg;}
-
+	inline FILE* getCoordFile() { return file_out; }
 
 private:
     Ui::MainWindow *ui;
@@ -65,6 +66,7 @@ private:
     Alg* alg;//algorithm class
 
     bool state;
+	FILE *file_out;
 
 private slots:
     void stop();

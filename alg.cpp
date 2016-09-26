@@ -104,41 +104,79 @@ bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
     return true;
 }
 
+
+int Alg::processMarkFilter(int tag_number)
+{
+	int i;
+	int j = 0;
+
+	for (i = 0; i < ANCHORS_NUMBER; i++)
+	{
+		//if (fabs(m_marks[i]) < XY_DIMENSION)   // if delta > XY_DIMENSION  -  ignore it
+		{
+			m_marks[i] = mark_filter(tag_number, i, m_marks[i]);
+
+			j++;
+		}
+	}
+	return(j);
+}
+
+// marks filter
+double Alg::mark_filter(int tag, int anc, double d)
+{
+	static double f[TAGS_NUMBER][ANCHORS_NUMBER];
+	double k = 20.0;
+	f[tag][anc] = f[tag][anc] + d - (f[tag][anc] / k);
+	return(f[tag][anc] / k);
+}
+
 void Alg::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 {
-    int i, j;
+    int i, j, count_anchors_ret;
     for(i = 0; i < TAGS_NUMBER; i++)         // 0..14
     {
        if(prepare_data(i))
-       {
-         //disp_data(i, m_marks);   // tag - 0, 1..
-         //call navigation algorithm here
-         //if(bancroft(i) > 0)
-            //disp_loacation(i, tag[i].x, tag[i].y, tag[i].z);
+       {       
+		   //make mark filter data processing
+		   count_anchors_ret = processMarkFilter(i);
+		   
+		   if (count_anchors_ret<4)//wrong situation !
+			   return;
 
+		   //call navigation algorithm here
            retPoint = DirectCalculationMethod(i);
+
+		   //show data
            mainWindow->SetOutput(tr("Anchor: %1").arg(datagram->addr),tr("Sync series_number: %1").arg(datagram->sync_n),tr("Anchor X: %1").arg(retPoint->x),
                                  tr("Anchor Y: %1").arg(retPoint->y),tr("Anchor Z: %1").arg(retPoint->z));
 		   
-		   char buff[BUFFER_SIZE];
-		   file_line_string.clear();
-		   _itoa_s(datagram->sync_n, buff, 10);
-		   file_line_string = buff;
-		   file_line_string += " ";
-
-		   sprintf(buff, "%f", retPoint->x);
-		   file_line_string += buff;
-		   file_line_string += " ";
-		   sprintf(buff, "%f", retPoint->y);
-		   file_line_string += buff;		   
-		   file_line_string += " ";
-		   sprintf(buff, "%f", retPoint->z);
-		   file_line_string += buff;
-		   file_line_string += '\n';
-
-		   fwrite(file_line_string.toStdString().c_str(), sizeof(char), file_line_string.length(), mainWindow->getCoordFile());
+		   //write results to the file
+		   WriteToFile(datagram, retPoint);
        }
     }
+}
+
+//write results to the file
+void Alg::WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint)
+{
+	char buff[BUFFER_SIZE];
+	file_line_string.clear();
+	_itoa_s(datagram->sync_n, buff, 10);
+	file_line_string = buff;
+	file_line_string += " ";
+
+	sprintf(buff, "%f", retPoint->x);
+	file_line_string += buff;
+	file_line_string += " ";
+	sprintf(buff, "%f", retPoint->y);
+	file_line_string += buff;
+	file_line_string += " ";
+	sprintf(buff, "%f", retPoint->z);
+	file_line_string += buff;
+	file_line_string += '\n';
+
+	fwrite(file_line_string.toStdString().c_str(), sizeof(char), file_line_string.length(), mainWindow->getCoordFile());
 }
 
 // distance anchor i to sync anchor 0 in DWT_TIME_UNITS

@@ -107,6 +107,8 @@ public:
     bool Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet);
     bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint);
     void process_nav(const ANC_MSG* datagram, POINT3D* retPoint);
+	int processMarkFilter(int tag_number);
+	double mark_filter(int tag, int anc, double d);
     int prepare_data(int tag);
     double find_max_m(void);
     void anc_dist(void);
@@ -136,6 +138,8 @@ private:
     POINT3D* ptRet;
     POINT3D* p3d;
     MainWindow* mainWindow;
+
+	void WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint);
 };
 
 #endif // ALG_H

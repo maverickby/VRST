@@ -2,23 +2,24 @@
 #include <cmath>
 #include <QDebug>
 
+#define XY_DIMENSION 3.04
+#define Z_DIMENSION 2.41
+
 POINT3D anchor_dflt[ANCHORS_NUMBER] = {				//default anchor positions
-                           {0, 0, 2.41},
-                           {3.02, 0, 2.41},
-                           {3.02, 3.02, 2.41},
-                           {0, 3.02, 2.41},
-                           {0, 0, 0},
-                           {3.02, 0, 0},
-                           {3.02, 3.02, 0},
-                           {0, 3.02, 0}
+                           {0, 0, Z_DIMENSION},
+                           {0, XY_DIMENSION, Z_DIMENSION},
+                           { XY_DIMENSION, XY_DIMENSION, Z_DIMENSION},
+                           { XY_DIMENSION, 0, Z_DIMENSION},
+                           {0, 0, 0.2},
+                           {0, XY_DIMENSION, 0.2},
+                           { XY_DIMENSION, XY_DIMENSION, 0.2},
+                           { XY_DIMENSION, 0, 0.2}
                           };
 
 double ant_delay[ANCHORS_NUMBER] ={0.05,0.52,1.55,0.45,1,0.96,0.75,0.69};
 
 #define BUFFER_SIZE 128
 
-#define XY_DIMENSION 3.02
-#define Z_DIMENSION 2.41
 
 Alg::Alg(MainWindow* wnd)
 {
@@ -33,12 +34,14 @@ void Alg::init()
         arrJ[i]=0;
     }
 
-    u[0]=0;u[1]=0;u[2]=3.02;u[3]=3.02;
-    u[4]=0;u[5]=0;u[6]=3.02;u[7]=3.02;
-    v[0]=0;v[1]=3.02;v[2]=3.02;v[3]=0;
-    v[4]=0;v[5]=3.02;v[6]=3.02;v[7]=0;
-    w[0]=0;w[1]=0;w[2]=0;w[3]=0;
-    w[4]=2.41;w[5]=2.41;w[6]=2.41;w[7]=2.41;
+    u[0]=0;    v[0] =0;    w[0] =Z_DIMENSION;	
+	u[1]=0; v[1] = XY_DIMENSION;    w[1] =Z_DIMENSION;
+	u[2]=XY_DIMENSION; v[2] =XY_DIMENSION; w[2] =Z_DIMENSION;
+	u[3]= XY_DIMENSION;    v[3] =0; w[3] =Z_DIMENSION;
+    u[4]=0;    v[4] =0;    w[4] =0.2;
+	u[5]=0; v[5] = XY_DIMENSION;    w[5] =0.2;
+	u[6]= XY_DIMENSION; v[6] = XY_DIMENSION; w[6] =0.2;
+	u[7]= XY_DIMENSION;    v[7]= 0; w[7] =0.2;
 
     pt1 = new POINT3D();
     pt1->x=pt1->y=pt1->z=0;
@@ -71,7 +74,7 @@ Alg::~Alg()
 
 bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 {
-    int i, n;
+    int i;
      if(datagram->addr == 0)  // first packet in the series, process previous data
      {
          //disp_series(datagram->sync_n);		   //display sync_n
@@ -133,7 +136,7 @@ double Alg::mark_filter(int tag, int anc, double d)
 
 void Alg::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 {
-    int i, j, count_anchors_ret;
+    int i, count_anchors_ret;
     for(i = 0; i < TAGS_NUMBER; i++)         // 0..14
     {
        if(prepare_data(i))
@@ -240,7 +243,7 @@ int Alg::prepare_data(int tag)
            m_marks[i] = m_marks[i] * /*SPEED_OF_LIGHT **/ DWT_TIME_UNITS + ant_delay[i]/SPEED_OF_LIGHT;
            if(i == 0)
              d0 = m_marks[0];
-// change absolute marks  to delta (mark[i] - mark[0])
+		   //change absolute marks  to delta (mark[i] - mark[0])
            m_marks[i] = m_marks[i] - d0;
          }
          //else
@@ -255,7 +258,6 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     int l,p,i;    
     double t11,t21,t31,t41,t51,t61,t71,t81;
     int s,k;
-    int count;
     int index_anyJ;
     double u21,u31,u41,v21,v31,v41,w21,w31,w41;
     double delta21,delta31,delta41,tau12,tau13,tau14,tau32,tau42;
@@ -283,10 +285,12 @@ POINT3D* Alg::DirectCalculationMethod(int tag)
     arrT[5]=t61;
     arrT[6]=t71;
     arrT[7]=t81;
+	x = y = z = 0;
+	zl=xl=yl=xMinus=xPlus=yMinus=yPlus=zMinus=zPlus = 0;
 
     if (t11 == 0 && t21 == 0 && t31 ==0 && t41 ==0 && t51 ==0  && t61 ==0 && t71 == 0 && t81 == 0)
     {
-        x = 1.51; y = 1.51; z = 1.205;
+        x = XY_DIMENSION/2; y = XY_DIMENSION/2; z = Z_DIMENSION / 2;
         p3d->x = x;p3d->y = y;p3d->z = z;
         return p3d;
     }
@@ -463,7 +467,7 @@ step102: if(a[3]==8)
 
     x=x/l;
     y=y/l;
-     z=z/l;
+    z=z/l;
 
     p3d->x = x;p3d->y = y;p3d->z = z;
     return p3d;
@@ -593,5 +597,16 @@ bool Alg::getarrJinAExcludeAs(int s)
         return true;
     }
 }
+
+/*POINT3D* Alg::MatrixMethod(int tag)
+{
+	double x, y, z;
+	int l, p, i;
+	double t11, t21, t31, t41, t51, t61, t71, t81;
+	int s, k;
+	int count;
+
+
+}*/
 
 

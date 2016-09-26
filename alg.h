@@ -112,6 +112,7 @@ public:
     int prepare_data(int tag);
     double find_max_m(void);
     void anc_dist(void);
+	POINT3D* MatrixMethod(int tag);
 private:
     int64 t_marks[TAGS_NUMBER][ANCHORS_NUMBER];		//time delay marks array 15x8 (picoseconds)
     double  m_marks[ANCHORS_NUMBER];                   // prepared deltas for one tag
@@ -121,7 +122,7 @@ private:
     int a[4];//массив для хранения текущей комбинации 4 из 8 (номера четырех текущих приемников сигнала)
              //(4-х элементное подмножество из множества чисел {1...8})
     int a_[4];//дополнительный массив
-    double arrT[ANCHORS_NUMBER];//массив времен задержек
+    double arrT[ANCHORS_NUMBER];//массив РАЗНОСТЕЙ задержек времен прихода сигналов
     int arrJ[3];//массив для хранения индексов массива a[] за исключением индекса элемента a[s]
     int sync_series;// series control
     int adj;// adjustment mode to set anchors antennas delays

@@ -1,6 +1,23 @@
 #ifndef DATAGRAM
 #define DATAGRAM
 
+typedef struct
+{
+	double x, y, z;
+} POINT3D;
+
+//маяки - передатчики
+//#define TAGS_NUMBER 15
+
+//якоря - премники/передатчики
+#define ANCHORS_NUMBER 8
+
+#define SPEED_OF_LIGHT      (299702547.0)       // in m/s in air
+#define ANC_REP_CODE   0x23						// Data packet signature
+#define DWT_TIME_UNITS      (1.0/499.2e6/128.0) //!< = 15.65e-12 s
+#define  MAX_T5   (double)0x010000000000		// 5 byte time marks maximum + 1
+#define  HALF_T5  (double)(MAX_T5 / 2)
+
 typedef unsigned char uint8;
 typedef long long     int64;
 
@@ -29,6 +46,11 @@ typedef struct
   uint8  sd_tags;					   // number of sensor data blocks
   G_A_DATA  sens_data[TAGS_NUMBER];         // max, in reality packet contains data for 2..3 tags (sd_tag, sd_tag+1, ..)
 } ANC_MSG;
+
+#define XY_DIMENSION 3.04
+#define Z_DIMENSION 2.41
+
+
 
 #endif // DATAGRAM
 

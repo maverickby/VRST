@@ -2,6 +2,8 @@
 #include <QtNetwork>
 
 #include "ntw.h"
+#include "alg1.h"
+#include "alg2.h"
 
 
 Ntw::Ntw(MainWindow* wnd)
@@ -40,8 +42,11 @@ void Ntw::processPendingDatagrams()
         sync_series_number = datagram->sync_n;
 
         //if datagram code is data packet signature and bytesRead > 0 then go to processing datagram
-        if(datagram->code == ANC_REP_CODE && sizeDatagramRead>0)
-            mainWindow->getAlg()->ProcessAnchorDatagram(datagram, &retPoint);
+		if (datagram->code == ANC_REP_CODE && sizeDatagramRead > 0)
+		{
+			mainWindow->getAlg1()->ProcessAnchorDatagram(datagram, &retPoint);
+			mainWindow->getAlg2()->ProcessAnchorDatagram(datagram, &retPoint);			
+		}
 
         //mainWindow->SetOutput(tr("Anchor: %1").arg(anchor_number),tr("Sync series_number: %1").arg(sync_series_number),tr("Anchor X: %1").arg(retPoint.x),
           //                    tr("Anchor Y: %1").arg(retPoint.y),tr("Anchor Z: %1").arg(retPoint.z));

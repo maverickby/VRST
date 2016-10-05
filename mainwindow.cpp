@@ -1,11 +1,13 @@
 #include "mainwindow.h"
+#include "alg1.h"
+#include "Alg2.h"
 #include "ui_mainwindow.h"
 
 #include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent)/*,
-    ui(new Ui::MainWindow)*/
+    QWidget(parent),
+    ui(new Ui::MainWindow)
 {
     //ui->setupUi(this);
     statuslabelLayout = new QHBoxLayout();
@@ -17,32 +19,56 @@ MainWindow::MainWindow(QWidget *parent) :
     statusLabel2->setWordWrap(true);
     statuslabelLayout->addWidget(statusLabel2);
 
+	QFrame* line = new QFrame();
+	line->setFrameShape(QFrame::HLine);
+	line->setFrameShadow(QFrame::Sunken);	
+	QFrame* line2 = new QFrame();
+	line2->setFrameShape(QFrame::HLine);
+	line2->setFrameShadow(QFrame::Sunken);
+
+	labelLayout2 = new QHBoxLayout();
+	alg2Label = new QLabel(tr("Algoritm 2"));
+	alg2Label->setWordWrap(true);	
+	labelLayout2->addWidget(alg2Label);
+
+	QLabel* algLabel = new QLabel(tr("Algoritm 1"));
+	algLabel->setWordWrap(true);
 
     AnchorlabelLayout = new QHBoxLayout();
     AnchorXLabel = new QLabel(tr("Anchor X:    "));
     AnchorYLabel = new QLabel(tr("Anchor Y:    "));
     AnchorZLabel = new QLabel(tr("Anchor Z:    "));
-
     AnchorlabelLayout->addWidget(AnchorXLabel);
     AnchorlabelLayout->addWidget(AnchorYLabel);
     AnchorlabelLayout->addWidget(AnchorZLabel);
 
+	QHBoxLayout* AnchorlabelLayout2 = new QHBoxLayout();
+	AnchorX2Label = new QLabel(tr("Anchor X:    "));
+	AnchorY2Label = new QLabel(tr("Anchor Y:    "));
+	AnchorZ2Label = new QLabel(tr("Anchor Z:    "));
+	AnchorlabelLayout2->addWidget(AnchorX2Label);
+	AnchorlabelLayout2->addWidget(AnchorY2Label);
+	AnchorlabelLayout2->addWidget(AnchorZ2Label);
+
     stopButton = new QPushButton(tr("&Stop"));
     startButton = new QPushButton(tr("&Start"));
 
-    buttonLayout = new QHBoxLayout;
-    //buttonLayout->addStretch(1);
+    buttonLayout = new QHBoxLayout();
     buttonLayout->addWidget(startButton);
-    buttonLayout->addWidget(stopButton);
-    //buttonLayout->addStretch(1);
+    buttonLayout->addWidget(stopButton);    
 
-    mainLayout = new QVBoxLayout;
+    mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(statuslabelLayout);
+	mainLayout->addWidget(line);
+	mainLayout->addWidget(algLabel);
     mainLayout->addLayout(AnchorlabelLayout);
+	mainLayout->addWidget(line2);
+	mainLayout->addLayout(labelLayout2);
+	mainLayout->addLayout(AnchorlabelLayout2);
+	//mainLayout->addSpacing(40);
     mainLayout->addLayout(buttonLayout);
+	
 
-    //mainLayout->setAlignment(statuslabelLayout,Qt::AlignLeft);
-    //mainLayout->setAlignment(AnchorlabelLayout,Qt::AlignLeft);
     mainLayout->setAlignment(buttonLayout,Qt::AlignRight);
 
     setLayout(mainLayout);
@@ -50,17 +76,18 @@ MainWindow::MainWindow(QWidget *parent) :
     stopButton->setDisabled(true);
 
     //Технология пространственного трекинга для систем виртуальной реальности (VR)
-    setWindowTitle(tr("VRST"));//VR space tracking
+    setWindowTitle(tr("VR space tracking"));//VR space tracking
 
-    resize(480,160);
+    resize(480,200);
     setFixedSize(this->size());
 
     //start network
     ntw = new Ntw(this);
-    //create algorithm instance
-    alg = new Alg(this);
-    //alg = new Alg();
+    //create algorithm instances
+    alg1 = new Alg1(this);
+    alg2 = new Alg2(this);
 	file_out = fopen("coordinates_out.txt", "wt");
+	file_out2 = fopen("coordinates_out2.txt", "wt");
 
     connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
     connect(startButton, SIGNAL(clicked()), this, SLOT(start()));
@@ -68,7 +95,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete statusLabel;
+	delete ui;
+    /*delete statusLabel;
     delete statusLabel2;
     delete AnchorXLabel;
     delete AnchorYLabel;
@@ -79,14 +107,18 @@ MainWindow::~MainWindow()
     delete statuslabelLayout;
     delete AnchorlabelLayout;
     delete buttonLayout;
-    delete mainLayout;
-
-    //delete ui;
-    delete ntw;
-    delete alg;
-	if(file_out)
+    delete mainLayout;*/
+    
+    //delete ntw;
+    //delete alg;
+/*	if(file_out)
 		fclose(file_out);
+	if (file_out2)
+		fclose(file_out2);*/
 }
+
+Alg1* MainWindow::getAlg1() { return alg1; }
+Alg2* MainWindow::getAlg2() { return alg2; }
 
 void MainWindow::start()
 {
@@ -95,6 +127,7 @@ void MainWindow::start()
     stopButton->setDisabled(false);
     //alg->DirectCalculationMethod();
 	file_out = fopen("coordinates_out.txt", "wt");
+	file_out2 = fopen("coordinates_out2.txt", "wt");
 }
 
 void MainWindow::stop()
@@ -104,6 +137,8 @@ void MainWindow::stop()
     stopButton->setDisabled(true);
 	if (file_out)
 		fclose(file_out);
+	if (file_out2)
+		fclose(file_out2);
 }
 
 void MainWindow::SetOutput(QString txt,QString txt2,QString txt3,QString txt4,QString txt5)
@@ -113,6 +148,13 @@ void MainWindow::SetOutput(QString txt,QString txt2,QString txt3,QString txt4,QS
     SetLabelTextAnchorXLabel(txt3);
     SetLabelTextAnchorYLabel(txt4);
     SetLabelTextAnchorZLabel(txt5);
+}
+
+void MainWindow::SetOutput2(QString txt, QString txt2, QString txt3)
+{
+	AnchorX2Label->setText(txt);
+	AnchorY2Label->setText(txt2);
+	AnchorZ2Label->setText(txt3);	
 }
 
 void MainWindow::SetLabelText(QString txt)

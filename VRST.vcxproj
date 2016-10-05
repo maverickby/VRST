@@ -139,7 +139,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="alg.cpp" />
+    <ClCompile Include="alg1.cpp" />
+    <ClCompile Include="Alg2.cpp" />
     <ClCompile Include="Debug\moc_alg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_alg1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_Alg2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Debug\moc_mainwindow.cpp">
@@ -151,11 +159,37 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="ntw.cpp" />
+    <ClCompile Include="Release\moc_alg1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_Alg2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Release\moc_ntw.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="Alg2.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing Alg2.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing Alg2.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="alg1.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing alg1.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing alg1.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <CustomBuild Include="alg.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>

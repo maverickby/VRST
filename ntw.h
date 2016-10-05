@@ -10,6 +10,8 @@
 #include "datagram.h"
 
 class MainWindow;
+//class Alg1;
+//class Alg2;
 
 QT_BEGIN_NAMESPACE
 class QUdpSocket;

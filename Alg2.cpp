@@ -158,6 +158,7 @@ int Alg2::prepare_data(int tag)
 {
 	int i;
 	double a, d0;
+	d0 = 0;
 	if (t_marks[tag][0] == 0)  //no data for master anchor
 		return(0);
 	// fix time marks using distance to master	(work)
@@ -200,9 +201,8 @@ POINT3D* Alg2::MatrixMethod(int tag)
 {
 	double x, y, z;
 	int l, r_, r1,r2, p, i,j;//r_ используетс€ вместо r
-	int k;
 	double alpha, beta, gamma;
-	double A, B, C, D, E, F, G, H, I;
+	double A, B, C, D, E, F;
 	double zl, xl, yl, xMinus, xPlus, yMinus, yPlus, zMinus, zPlus;	
 
 	//здесь разницы рассто€ний от ма€ка до i-го передатчика относительно
@@ -375,12 +375,12 @@ bool Alg2::InverseMatrix(double A[][3], double A_[][3])
 		return false;	
 	A_[0][0] = (A[1][1] * A[2][2] - A[2][1] * A[1][2]) / det;
 	A_[0][1] = (A[2][0] * A[1][2] - A[1][0] * A[2][2]) / det;
-	A_[0][2] = (A[1][0] * A[2][1] - A[2][0] * A[3][3]) / det;
+	A_[0][2] = (A[1][0] * A[2][1] - A[2][0] * A[1][1]) / det;
 	A_[1][0] = (A[2][1] * A[0][2] - A[0][1] * A[2][2]) / det;
 	A_[1][1] = (A[0][0] * A[2][2] - A[2][0] * A[0][2]) / det;
 	A_[1][2] = (A[2][0] * A[0][1] - A[0][0] * A[2][1]) / det;
 	A_[2][0] = (A[0][1] * A[1][2] - A[1][1] * A[0][2]) / det;
-	A_[2][1] = (A[1][0] * A[0][2] - A[0][0] * A[1][3]) / det;
+	A_[2][1] = (A[1][0] * A[0][2] - A[0][0] * A[1][2]) / det;
 	A_[2][2] = (A[0][0] * A[1][1] - A[1][0] * A[0][1]) / det;
 	return true;
 }
@@ -432,12 +432,12 @@ int Alg2::QuadraticEquationAnalyzing(double alpha, double beta, double gamma)
 	}
 }
 
-//получить произвольное врем€ задержки из массива arrAnchVal[]
+//получить произвольное врем€ задержки из массива r[] (arrAnchVal)
 int Alg2::R_A_JK(int j, int k)
 {
-	if (j<0 || j>3 || k<0 || k>3)
+	if (j<0 || j>7 || k<0 || k>7)
 	{
-		qDebug("wrong index !");
+		qDebug("R_A_JK: wrong index !");
 		return -1;
 	}
 	else

@@ -34,8 +34,7 @@ public:
 	double find_max_m(void);
 	void anc_dist(void);
 private:
-	int a_[4];//дополнительный массив
-	//double arrT[ANCHORS_NUMBER];//массив РАЗНОСТЕЙ задержек времен прихода сигналов
+	int a_[4];//дополнительный массив	
 	int arrJ[3];//массив для хранения индексов массива a[] за исключением индекса элемента a[s]
 	QString file_line_string;
 

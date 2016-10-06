@@ -117,8 +117,15 @@ MainWindow::~MainWindow()
 		fclose(file_out2);*/
 }
 
-Alg1* MainWindow::getAlg1() { return alg1; }
-Alg2* MainWindow::getAlg2() { return alg2; }
+Alg1* MainWindow::getAlg1()
+{
+	return alg1;
+}
+
+Alg2* MainWindow::getAlg2()
+{
+	return alg2;
+}
 
 void MainWindow::start()
 {
@@ -128,6 +135,7 @@ void MainWindow::start()
     //alg->DirectCalculationMethod();
 	file_out = fopen("coordinates_out.txt", "wt");
 	file_out2 = fopen("coordinates_out2.txt", "wt");
+	qDebug("start");
 }
 
 void MainWindow::stop()
@@ -139,6 +147,7 @@ void MainWindow::stop()
 		fclose(file_out);
 	if (file_out2)
 		fclose(file_out2);
+	qDebug("stop");
 }
 
 void MainWindow::SetOutput(QString txt,QString txt2,QString txt3,QString txt4,QString txt5)

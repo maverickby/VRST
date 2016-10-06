@@ -24,7 +24,7 @@ public:
 
 	POINT3D* MatrixMethod(int tag);
 	
-	int R_A_JK(int j, int k);//получить произвольное время задержки из массива r[]
+	int R_A_JK(int j, int k);//получить произвольное время задержки из массива r[] (arrAnchVal)
 
 	virtual bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint);
 	virtual void process_nav(const ANC_MSG* datagram, POINT3D* retPoint);

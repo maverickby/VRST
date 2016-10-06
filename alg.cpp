@@ -61,45 +61,30 @@ Alg::~Alg()
    delete p3d;
 }
 
-bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
-{
-	return true;
-}
+// bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
+// {
+// 	return false;
+// }
 
-void Alg::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
-{
-}
+// void Alg::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
+// {
+// }
 
-int Alg::prepare_data(int tag)
-{
-	return 1;
-}
+// int Alg::prepare_data(int tag)
+// {
+// 	return 0;
+// }
 
-int Alg::processMarkFilter(int tag_number)
-{
-	int i;
-	int j = 0;
-
-	for (i = 0; i < ANCHORS_NUMBER; i++)
-	{
-		//if (fabs(m_marks[i]) < XY_DIMENSION)   // if delta > XY_DIMENSION  -  ignore it
-		{
-			m_marks[i] = mark_filter(tag_number, i, m_marks[i]);
-
-			j++;
-		}
-	}
-	return(j);
-}
+// int Alg::processMarkFilter(int tag_number)
+// {
+// 	return 0;
+// }
 
 // marks filter
-double Alg::mark_filter(int tag, int anc, double d)
-{
-	static double f[TAGS_NUMBER][ANCHORS_NUMBER];
-	double k = 20.0;
-	f[tag][anc] = f[tag][anc] + d - (f[tag][anc] / k);
-	return(f[tag][anc] / k);
-}
+// double Alg::mark_filter(int tag, int anc, double d)
+// {	
+// 	return 0;
+// }
 
 //write results to the file
 void Alg::WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint, FILE* file)

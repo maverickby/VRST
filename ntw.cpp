@@ -10,10 +10,6 @@ Ntw::Ntw(MainWindow* wnd)
 {
     mainWindow = (MainWindow*)wnd;
     udpSocket = new QUdpSocket(this);
-    //udpSocket->bind(50010, QUdpSocket::ShareAddress);
-
-    //connect(udpSocket, SIGNAL(readyRead()),
-    //        this, SLOT(processPendingDatagrams()));
     datagram = new ANC_MSG();
 }
 
@@ -33,6 +29,10 @@ void Ntw::processPendingDatagrams()
     int sync_series_number;
     QHostAddress sender;
     POINT3D retPoint;
+	POINT3D retPoint2;
+
+	retPoint.x = 0; retPoint.y = 0; retPoint.z = 0;
+	retPoint2.x = 0; retPoint2.y = 0; retPoint2.z = 0;
 
     while (udpSocket->hasPendingDatagrams())
     {
@@ -45,35 +45,23 @@ void Ntw::processPendingDatagrams()
 		if (datagram->code == ANC_REP_CODE && sizeDatagramRead > 0)
 		{
 			mainWindow->getAlg1()->ProcessAnchorDatagram(datagram, &retPoint);
-			mainWindow->getAlg2()->ProcessAnchorDatagram(datagram, &retPoint);			
+			mainWindow->getAlg2()->ProcessAnchorDatagram(datagram, &retPoint2);			
 		}
-
-        //mainWindow->SetOutput(tr("Anchor: %1").arg(anchor_number),tr("Sync series_number: %1").arg(sync_series_number),tr("Anchor X: %1").arg(retPoint.x),
-          //                    tr("Anchor Y: %1").arg(retPoint.y),tr("Anchor Z: %1").arg(retPoint.z));
-        //mainWindow->SetLabelText(tr("Anchor: %1").arg(anchor_number));
-        //mainWindow->SetLabelText2(tr("Sync series_number: %1").arg(sync_series_number));
     }
 }
 
 void Ntw::stop()
 {
     udpSocket->abort();
-    //mainWindow->SetLabelText(tr("Listening for TDOA UDP server messages"));
-    //mainWindow->SetLabelTextAnchorXLabel(tr("Anchor X:    "));
-    //mainWindow->SetLabelTextAnchorYLabel(tr("Anchor Y:    "));
-    //mainWindow->SetLabelTextAnchorZLabel(tr("Anchor Z:    "));
 }
 
 void Ntw::start()
 {
     /*QHostAddress addr;
     addr.setAddress("192.168.1.56");
-
     udpSocket->bind(addr, 50010, QUdpSocket::ShareAddress);*/
     
 	udpSocket->bind(QHostAddress::Any, 50010, QUdpSocket::ShareAddress);
-
-
     connect(udpSocket, SIGNAL(readyRead()),
             this, SLOT(processPendingDatagrams()));
 }

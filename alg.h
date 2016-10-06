@@ -17,14 +17,13 @@ public:
     virtual ~Alg();
 
     void init();
-	//virtual void init_();
 
     bool Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet);
-    virtual bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint);
-    virtual void process_nav(const ANC_MSG* datagram, POINT3D* retPoint);
-	int processMarkFilter(int tag_number);
-	double mark_filter(int tag, int anc, double d);
-    virtual int prepare_data(int tag);
+    virtual bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint) = 0;
+    virtual void process_nav(const ANC_MSG* datagram, POINT3D* retPoint) = 0;
+	virtual int processMarkFilter(int tag_number) = 0;
+	virtual double mark_filter(int tag, int anc, double d) = 0;
+    virtual int prepare_data(int tag) = 0;
     double find_max_m(void);
     void anc_dist(void);
 	void WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint, FILE* file);

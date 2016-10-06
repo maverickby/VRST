@@ -13,7 +13,7 @@ Alg1::Alg1(MainWindow* wnd):Alg(wnd)
 
 void Alg1::init_()
 {
-	for (int i = 0; i<4; i++)
+	for (int i = 0; i<3; i++)
 	{
 		arrJ[i] = 0;
 	}
@@ -146,6 +146,7 @@ int Alg1::prepare_data(int tag)
 {
 	int i;
 	double a, d0;
+	d0 = 0;
 	if (t_marks[tag][0] == 0)  //no data for master anchor
 		return(0);
 	// fix time marks using distance to master	(work)
@@ -410,7 +411,7 @@ int Alg1::getTA_JK(int j, int k)
 {
 	if (j<0 || j>3 || k<0 || k>3)
 	{
-		qDebug("wrong index !");
+		qDebug("getTA_JK: wrong index !");
 		return -1;
 	}
 	else

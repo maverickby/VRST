@@ -20,19 +20,19 @@ void Alg::init()
 	u[1]=0; v[1] = XY_DIMENSION;    w[1] =Z_DIMENSION;
 	u[2]=XY_DIMENSION; v[2] =XY_DIMENSION; w[2] =Z_DIMENSION;
 	u[3]= XY_DIMENSION;    v[3] =0; w[3] =Z_DIMENSION;
-    u[4]=0;    v[4] =0;    w[4] =0.2;
-	u[5]=0; v[5] = XY_DIMENSION;    w[5] =0.2;
-	u[6]= XY_DIMENSION; v[6] = XY_DIMENSION; w[6] =0.2;
-	u[7]= XY_DIMENSION;    v[7]= 0; w[7] =0.2;
+    u[4]=0;    v[4] =0;    w[4] =0;
+	u[5]=0; v[5] = XY_DIMENSION;    w[5] =0;
+	u[6]= XY_DIMENSION; v[6] = XY_DIMENSION; w[6] =0;
+	u[7]= XY_DIMENSION;    v[7]= 0; w[7] =0;
 
-	ant_delay[0] = 0.05;
-	ant_delay[1] = 0.54;
-	ant_delay[2] = 1.55;
-	ant_delay[3] = 0.45;
-	ant_delay[4] = 0.84;
-	ant_delay[5] = 0.41;
-	ant_delay[6] = 0.75;
-	ant_delay[7] = 0.81;
+	ant_delay[0] = 0.01;
+	ant_delay[1] = 0.12;
+	ant_delay[2] = 0.48;
+	ant_delay[3] = 0.05;
+	ant_delay[4] = 0.05;
+	ant_delay[5] = 0.00;
+	ant_delay[6] = 0.60;
+	ant_delay[7] = 0.01;
 
     pt1 = new POINT3D();
     pt1->x=pt1->y=pt1->z=0;
@@ -51,6 +51,19 @@ void Alg::init()
     memset(anchor, 0, sizeof(anchor));//clear trash in the array
     memset(tag, 0, sizeof(tag));//clear trash in the array
     memset(a, 0, sizeof(a));//clear trash in the array
+
+	memset(kalmanData, 0, sizeof(kalmanData));
+	for (int i = 0; i < ANCHORS_NUMBER; i++)
+	{
+		kalmanData[i].R = 0.1E-009;
+		kalmanData[i].PMinusK = 1;
+		kalmanData[i].Pk = 1;
+		kalmanData[i].PkMinus1 = 1;
+		kalmanData[i].XMinusK = 0;
+		kalmanData[i].XkMinus1 = 0;
+	}
+
+	datagramCount = 0;	
 }
 
 Alg::~Alg()

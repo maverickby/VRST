@@ -4,6 +4,8 @@
 
 #define BUFFER_SIZE 128
 
+
+
 Alg1::Alg1(MainWindow* wnd):Alg(wnd)
 {
 	//mainWindow = wnd;
@@ -20,6 +22,8 @@ void Alg1::init_()
 	
 	memset(a_, 0, sizeof(a_));//clear trash in the array
 	memset(arrAnchVal, 0, sizeof(arrAnchVal));//clear trash in the array
+	dataSumm = 0;
+	//datagramCount = 0;
 }
 
 Alg1::~Alg1()
@@ -45,12 +49,51 @@ int Alg1::processMarkFilter(int tag_number)
 }
 
 // marks filter
+//фильтр первого порядка (RC), фильтр отметок
 double Alg1::mark_filter(int tag, int anc, double d)
 {
 	static double f[TAGS_NUMBER][ANCHORS_NUMBER];
 	double k = 20.0;
 	f[tag][anc] = f[tag][anc] + d - (f[tag][anc] / k);
 	return(f[tag][anc] / k);
+}
+
+//some magic here is
+int Alg1::processKalmanFilter(int tag_number)
+{
+	int i;
+	int j = 0;
+
+	for (i = 0; i < ANCHORS_NUMBER; i++)
+	{
+		//if (fabs(m_marks[i]) < XY_DIMENSION)   // if delta > XY_DIMENSION  -  ignore it
+		{
+			if (datagramCount > 9)
+			{
+				kalmanData[i].R = dataSumm / 10;
+				m_marks[i] = KalmanFilter(tag_number, i, m_marks[i]);
+			}
+			else
+			{
+				dataSumm += m_marks[i];
+			}
+
+			j++;
+		}
+	}
+	return(j);
+}
+
+//фильтр Калмана
+double Alg1::KalmanFilter(int tag, int anc, double d)
+{
+	kalmanData[anc].XMinusK = kalmanData[anc].XkMinus1;
+	kalmanData[anc].PMinusK = kalmanData[anc].PkMinus1;
+
+	kalmanData[anc].Kk = kalmanData[anc].PMinusK / (kalmanData[anc].PMinusK + kalmanData[anc].R);
+	kalmanData[anc].Xk = kalmanData[anc].XMinusK  + kalmanData[anc].Kk*(d + kalmanData[anc].XMinusK);
+	kalmanData[anc].Pk = (1- kalmanData[anc].Kk)* kalmanData[anc].PMinusK;
+	return kalmanData[anc].Xk;	
 }
 
 bool Alg1::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
@@ -62,6 +105,7 @@ bool Alg1::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 		process_nav(datagram, retPoint); //prepare data and do navigation procedure
 		memset(t_marks, 0, sizeof(t_marks));	   //clear marks
 		sync_series = datagram->sync_n;		   //new #
+		datagramCount = 0;//reset datagram counter for Kalman filter's R estimate
 	}
 	// get new data for the anchor
 	if (datagram->sync_n == sync_series)
@@ -69,7 +113,11 @@ bool Alg1::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 		// copy marks
 		for (i = 0; i < TAGS_NUMBER; i++)
 			memcpy((char *)&t_marks[i][datagram->addr], datagram->time_mark[i], 5);
+
+		datagramCount++;
 	}
+	//else//change datagram number here !
+		//datagramCount++;
 	//check for sensors data, NOT IMPLEMENTED YET
 	if (datagram->length >(TAGS_NUMBER * 5))
 	{/*
@@ -82,9 +130,7 @@ bool Alg1::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 	 if(n >= TAGS_NUMBER)
 	 n = 0;
 	 }*/
-	}
-
-	//retPoint = DirectCalculationMethod(double t11,double t21,double t31,double t41,double t51,double t61,double t71,double t81);
+	}	
 	return true;
 }
 
@@ -96,7 +142,10 @@ void Alg1::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 		if (prepare_data(i))
 		{
 			//make mark filter data processing
-			count_anchors_ret = processMarkFilter(i);
+			//count_anchors_ret = processMarkFilter(i);
+
+			//make Kalman filter data processing
+			count_anchors_ret = processKalmanFilter(i);
 
 			if (count_anchors_ret<4)//wrong situation !
 				return;
@@ -199,7 +248,7 @@ POINT3D* Alg1::DirectCalculationMethod(int tag)
 	double zl, xl, yl, xMinus, xPlus, yMinus, yPlus, zMinus, zPlus;
 
 	//здесь разницы времен получения сигнала от маяка до i-го передатчика относительно
-	//первого передатчика, в секундах (пикосекундах)
+	//первого передатчика, в секундах
 	t11 = m_marks[0];
 	t21 = m_marks[1];
 	t31 = m_marks[2];

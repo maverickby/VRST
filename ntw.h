@@ -1,22 +1,18 @@
 #ifndef NTW_H
 #define NTW_H
 
-//#include <QObject>
 #include <QWidget>
 #include <QMainWindow>
 
 #include "mainwindow.h"
-//#include "alg.h"
+
 #include "datagram.h"
 
 class MainWindow;
-//class Alg1;
-//class Alg2;
 
 QT_BEGIN_NAMESPACE
 class QUdpSocket;
 class QAction;
-//class ANC_MSG;
 QT_END_NAMESPACE
 
 

@@ -32,7 +32,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QWidget
+class MainWindow : public QWidget/*QMainWindow*/
 {
     Q_OBJECT
 

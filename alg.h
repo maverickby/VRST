@@ -5,6 +5,11 @@
 class MainWindow;
 #include "datagram.h"
 
+struct KalmanData
+{
+	double Kk, PMinusK, Pk, PkMinus1, R, Zk, Xk, XMinusK, XkMinus1;
+};
+
 /*
  * This class is intended for math processing of the input messages from 8 anchors as series of time delays in picoseconds
 */
@@ -21,8 +26,16 @@ public:
     bool Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet);
     virtual bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint) = 0;
     virtual void process_nav(const ANC_MSG* datagram, POINT3D* retPoint) = 0;
+	
 	virtual int processMarkFilter(int tag_number) = 0;
+    //фильтр первого порядка (RC), фильтр отметок
 	virtual double mark_filter(int tag, int anc, double d) = 0;
+
+	//virtual int processKalmanFilter(int tag_number) = 0;
+	//фильтр Калмана
+	//virtual double KalmanFilter(int tag, int anc, double d) = 0;
+
+
     virtual int prepare_data(int tag) = 0;
     double find_max_m(void);
     void anc_dist(void);
@@ -52,6 +65,8 @@ protected:
     POINT3D* ptRet;
     POINT3D* p3d;
     MainWindow* mainWindow;	
+	KalmanData kalmanData[ANCHORS_NUMBER];
+	int datagramCount;
 };
 
 

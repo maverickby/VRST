@@ -30,6 +30,11 @@ public:
 	virtual void process_nav(const ANC_MSG* datagram, POINT3D* retPoint);
 	int processMarkFilter(int tag_number);
 	double mark_filter(int tag, int anc, double d);
+
+	virtual int processKalmanFilter(int tag_number);
+	//фильтр Калмана
+	virtual double KalmanFilter(int tag, int anc, double d);
+
 	virtual int prepare_data(int tag);
 	double find_max_m(void);
 	void anc_dist(void);
@@ -37,6 +42,7 @@ private:
 	int a_[4];//дополнительный массив	
 	int arrJ[3];//массив для хранения индексов массива a[] за исключением индекса элемента a[s]
 	QString file_line_string;
+	double dataSumm;//сумма 10 элементов для оценки значения R фильтра Калмана
 
 	//MainWindow* mainWindow;
 };

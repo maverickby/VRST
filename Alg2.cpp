@@ -57,6 +57,7 @@ int Alg2::processMarkFilter(int tag_number)
 	return(j);
 }
 
+//фильтр первого порядка (RC), фильтр отметок
 // marks filter
 double Alg2::mark_filter(int tag, int anc, double d)
 {

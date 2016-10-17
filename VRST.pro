@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 QT += network widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -16,11 +16,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     ntw.cpp \
-    alg.cpp
+    alg.cpp \
+    alg1.cpp \
+    Alg2.cpp \
+    oglwidget.cpp
 
 HEADERS  += mainwindow.h \
     ntw.h \
     alg.h \
-    datagram.h
+    alg1.h \
+    Alg2.h \
+    datagram.h \
+    oglwidget.h
 
 FORMS    += mainwindow.ui
+
+LIBS += -lglu32 -lopengl32

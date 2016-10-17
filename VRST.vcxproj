@@ -56,7 +56,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore;release;.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015;.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore;release;.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015;.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -65,7 +65,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -75,7 +75,7 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(QTDIR)\lib\qtmain.lib;shell32.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR)\lib\qtmain.lib;shell32.lib;glu32.lib;opengl32.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\utils\postgresql\pgsql\lib;C:\utils\my_sql\my_sql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -93,12 +93,12 @@
       <WarningLevel>0</WarningLevel>
     </Midl>
     <ResourceCompile>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore;debug;.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015;.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore;debug;.;..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015;.\GeneratedFiles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -107,7 +107,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -117,7 +117,7 @@
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(QTDIR)\lib\qtmaind.lib;shell32.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR)\lib\qtmaind.lib;shell32.lib;glu32.lib;opengl32.lib;$(QTDIR)\lib\Qt5OpenGLd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\utils\postgresql\pgsql\lib;C:\utils\my_sql\my_sql\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -134,13 +134,13 @@
       <WarningLevel>0</WarningLevel>
     </Midl>
     <ResourceCompile>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Alg2.cpp" />
     <ClCompile Include="alg.cpp" />
     <ClCompile Include="alg1.cpp" />
-    <ClCompile Include="Alg2.cpp" />
     <ClCompile Include="Debug\moc_alg.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -159,43 +159,37 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="ntw.cpp" />
-    <ClCompile Include="Release\moc_alg1.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Release\moc_Alg2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="oglwidget.cpp" />
     <ClCompile Include="Release\moc_ntw.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Alg2.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing Alg2.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing Alg2.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing Alg2.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="alg.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing alg.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing alg.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="alg1.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing alg1.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing alg1.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015" "-I.\GeneratedFiles"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-    </CustomBuild>
-    <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
-    <CustomBuild Include="alg.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing alg.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing alg.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing alg1.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -203,9 +197,9 @@
     </CustomBuild>
     <ClInclude Include="datagram.h" />
     <CustomBuild Include="mainwindow.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing mainwindow.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing mainwindow.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -213,18 +207,26 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <CustomBuild Include="ntw.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\release" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing ntw.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB "-I." "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtOpenGL" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtWidgets" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtGui" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtANGLE" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtNetwork" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\include\QtCore" "-I.\debug" "-I.\..\..\Qt\Qt5.7.0\5.7\msvc2015_64\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing ntw.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
+    <ClInclude Include="oglwidget.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Release\moc_alg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_alg1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_Alg2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Release\moc_mainwindow.cpp">

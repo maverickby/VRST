@@ -6,10 +6,10 @@
 #include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent),
+	QWidget(parent), /*QMainWindow(parent),*/
     ui(new Ui::MainWindow)
 {
-    //ui->setupUi(this);
+    //ui->setupUi((QMainWindow*)this);
     statuslabelLayout = new QHBoxLayout();
     statusLabel = new QLabel(tr("Listening for TDOA UDP server messages"));
     statusLabel->setWordWrap(true);

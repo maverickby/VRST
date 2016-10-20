@@ -26,13 +26,13 @@ void Alg::init()
 	u[7]= XY_DIMENSION;    v[7]= 0; w[7] =0;
 
 	ant_delay[0] = 0.01;
-	ant_delay[1] = 0.12;
-	ant_delay[2] = 0.48;
-	ant_delay[3] = 0.05;
-	ant_delay[4] = 0.05;
-	ant_delay[5] = 0.00;
-	ant_delay[6] = 0.60;
-	ant_delay[7] = 0.01;
+	ant_delay[1] = 0.08;
+	ant_delay[2] = 0.22;
+	ant_delay[3] = -0.29;
+	ant_delay[4] = 0.10;
+	ant_delay[5] = 0.11;
+	ant_delay[6] = 0.67;
+	ant_delay[7] = 0.18;
 
     pt1 = new POINT3D();
     pt1->x=pt1->y=pt1->z=0;
@@ -55,15 +55,16 @@ void Alg::init()
 	memset(kalmanData, 0, sizeof(kalmanData));
 	for (int i = 0; i < ANCHORS_NUMBER; i++)
 	{
-		kalmanData[i].R = 0.1E-009;
+		kalmanData[i].R = 0;
 		kalmanData[i].PMinusK = 1;
 		kalmanData[i].Pk = 1;
 		kalmanData[i].PkMinus1 = 1;
 		kalmanData[i].XMinusK = 0;
 		kalmanData[i].XkMinus1 = 0;
+		kalmanData[i].dataSumm = 0;
 	}
 
-	datagramCount = 0;	
+	datagramKalmanCount = 0;	
 }
 
 Alg::~Alg()

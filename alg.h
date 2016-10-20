@@ -8,6 +8,7 @@ class MainWindow;
 struct KalmanData
 {
 	double Kk, PMinusK, Pk, PkMinus1, R, Zk, Xk, XMinusK, XkMinus1;
+	double dataSumm;//сумма для хранения 10 показаний приемника, чтобы рассчитать R
 };
 
 /*
@@ -40,6 +41,21 @@ public:
     double find_max_m(void);
     void anc_dist(void);
 	void WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint, FILE* file);
+	inline void setDatagramKalmanCount(int val) { datagramKalmanCount = val; }
+	inline void resetKalmanFilterVariables()
+	{
+		setDatagramKalmanCount(0);
+		for (int i = 0; i < ANCHORS_NUMBER; i++)
+		{
+			kalmanData[i].R = 0;
+			kalmanData[i].PMinusK = 1;
+			kalmanData[i].Pk = 1;
+			kalmanData[i].PkMinus1 = 1;
+			kalmanData[i].XMinusK = 0;
+			kalmanData[i].XkMinus1 = 0;
+			kalmanData[i].dataSumm = 0;
+		}
+	}
 protected:
     int64 t_marks[TAGS_NUMBER][ANCHORS_NUMBER];		//time delay marks array 15x8 (picoseconds)
     double  m_marks[ANCHORS_NUMBER];                   // prepared deltas for one tag
@@ -66,7 +82,7 @@ protected:
     POINT3D* p3d;
     MainWindow* mainWindow;	
 	KalmanData kalmanData[ANCHORS_NUMBER];
-	int datagramCount;
+	int datagramKalmanCount;
 };
 
 

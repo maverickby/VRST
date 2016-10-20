@@ -42,7 +42,6 @@ private:
 	int a_[4];//дополнительный массив	
 	int arrJ[3];//массив для хранения индексов массива a[] за исключением индекса элемента a[s]
 	QString file_line_string;
-	double dataSumm;//сумма 10 элементов для оценки значения R фильтра Калмана
 
 	//MainWindow* mainWindow;
 };

@@ -13,7 +13,7 @@ typedef struct
 #define ANCHORS_NUMBER 8
 
 #define SPEED_OF_LIGHT      (299702547.0)       // in m/s in air
-#define ANC_REP_CODE   0x23						// Data packet signature
+#define ANC_REP_CODE   0x23						// Data packet signature (35)
 #define DWT_TIME_UNITS      (1.0/499.2e6/128.0) //!< = 15.65e-12 s
 #define  MAX_T5   (double)0x010000000000		// 5 byte time marks maximum + 1
 #define  HALF_T5  (double)(MAX_T5 / 2)

@@ -146,7 +146,7 @@ void Alg1::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 	int i, count_anchors_ret;
 	for (i = 0; i < TAGS_NUMBER; i++)         // 0..14
 	{
-		if (prepare_data(i))
+		if (prepare_data(i, datagram))
 		{
 			//make mark filter data processing
 			count_anchors_ret = processMarkFilter(i);
@@ -193,12 +193,17 @@ double Alg1::find_max_m(void)
 	return(a);
 }
 
+int Alg1::prepare_data(int tag)
+{
+	return 0;
+}
+
 // copy t_mark for selected tag to m_mark
 // check and fix overflow
 // change time from DWT_TIME_UNITS to SECONDS
 // change absolute mark value to delta (markN - mark0)
 // return 0 if no data for master anchor (#0)
-int Alg1::prepare_data(int tag)
+int Alg1::prepare_data(int tag, const ANC_MSG* datagram)
 {
 	int i;
 	double a, d0;
@@ -229,11 +234,14 @@ int Alg1::prepare_data(int tag)
 			// array ant_delay  - meters
 			//здесь разницы времен получения сигнала от маяка до i-го передатчика относительно
 			//первого передатчика, в секундах (пикосекундах)
-			m_marks[i] = m_marks[i] * /*SPEED_OF_LIGHT **/ DWT_TIME_UNITS + ant_delay[i] / SPEED_OF_LIGHT;
+			m_marks[i] = m_marks[i] * DWT_TIME_UNITS + ant_delay[i] / SPEED_OF_LIGHT;
 			if (i == 0)
 				d0 = m_marks[0];
 			//change absolute marks  to delta (mark[i] - mark[0])
 			m_marks[i] = m_marks[i] - d0;
+
+			//write results to the file
+			WriteRawDataToFile(datagram, i, m_marks[i], mainWindow->getRawDataFile());
 		}
 		//else
 		//    m_marks[i] = 10;   // set to 10m - will be removed

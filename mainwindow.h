@@ -52,6 +52,7 @@ public:
 	Alg2* getAlg2();
 	inline FILE* getCoordFile1() { return file_out; }
 	inline FILE* getCoordFile2() { return file_out2; }
+	inline FILE* getRawDataFile() { return file_raw_data; }
 
 private:
     Ui::MainWindow *ui;
@@ -82,6 +83,7 @@ private:
     bool state;
 	FILE *file_out;
 	FILE *file_out2;
+	FILE *file_raw_data;
 
 private slots:
     void stop();

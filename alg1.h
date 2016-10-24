@@ -35,6 +35,7 @@ public:
 	//фильтр Калмана
 	virtual double KalmanFilter(int tag, int anc, double d);
 
+	virtual int prepare_data(int tag, const ANC_MSG* datagram);
 	virtual int prepare_data(int tag);
 	double find_max_m(void);
 	void anc_dist(void);

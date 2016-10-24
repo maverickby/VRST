@@ -1,6 +1,7 @@
 #include "alg.h"
 #include <cmath>
 #include <QDebug>
+#include <QDateTime>
 
 #define BUFFER_SIZE 128
 
@@ -42,6 +43,10 @@ void Alg::init()
     ptRet->x=ptRet->y=ptRet->z=0;
     p3d = new POINT3D();
     p3d->x=p3d->y=p3d->z=0;
+	
+	ptRawData = new POINT3D();
+	ptRawData->x = ptRawData->y = ptRawData->z = 0;
+
     sync_series = -1;
     adj = 0;
     memset(t_marks, 0, sizeof(t_marks));//clear trash in the array (marks)
@@ -73,6 +78,7 @@ Alg::~Alg()
    delete pt2;
    delete ptRet;
    delete p3d;
+   delete ptRawData;
 }
 
 // bool Alg::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
@@ -104,9 +110,15 @@ Alg::~Alg()
 void Alg::WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint, FILE* file)
 {
 	char buff[BUFFER_SIZE];
+	QTime time = QTime::currentTime();
+
 	file_line_string.clear();
+
+	file_line_string = time.toString();
+	file_line_string += " ";
+
     _itoa_s(datagram->sync_n, buff,BUFFER_SIZE, 10);
-	file_line_string = buff;
+	file_line_string += buff;
 	file_line_string += " ";
 
 	sprintf(buff, "%f", retPoint->x);
@@ -120,6 +132,33 @@ void Alg::WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint, FILE* file)
 	file_line_string += '\n';
 
 	fwrite(file_line_string.toStdString().c_str(), sizeof(char), file_line_string.length(), file);
+}
+
+//write results to the file
+void Alg::WriteRawDataToFile(const ANC_MSG* datagram, int anchor_number, double data, FILE* file)
+{
+	char buff[BUFFER_SIZE];
+	QTime time = QTime::currentTime();
+
+	file_line_string_rawdata.clear();
+
+	file_line_string_rawdata = time.toString();
+	file_line_string_rawdata += " ";
+
+	_itoa_s(anchor_number, buff, BUFFER_SIZE, 10);
+	file_line_string_rawdata += buff;
+	file_line_string_rawdata += " ";
+
+	_itoa_s(datagram->sync_n, buff, BUFFER_SIZE, 10);
+	file_line_string_rawdata += buff;
+	file_line_string_rawdata += " ";
+
+	memset(buff, 0, sizeof(buff));
+	sprintf(buff, "%.*g", 16, data);
+	file_line_string_rawdata += buff;	
+	file_line_string_rawdata += '\n';
+
+	fwrite(file_line_string_rawdata.toStdString().c_str(), sizeof(char), file_line_string_rawdata.length(), file);
 }
 
 // distance anchor i to sync anchor 0 in DWT_TIME_UNITS

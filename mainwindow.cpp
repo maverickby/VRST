@@ -88,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
     alg2 = new Alg2(this);
 	file_out = fopen("coordinates_out.txt", "wt");
 	file_out2 = fopen("coordinates_out2.txt", "wt");
+	file_raw_data = fopen("raw_data.txt", "wt");	
 
     connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
     connect(startButton, SIGNAL(clicked()), this, SLOT(start()));
@@ -135,6 +136,8 @@ void MainWindow::start()
     //alg->DirectCalculationMethod();
 	file_out = fopen("coordinates_out.txt", "wt");
 	file_out2 = fopen("coordinates_out2.txt", "wt");
+	file_raw_data = fopen("raw_data.txt", "wt");
+	
 	qDebug("start");
 }
 
@@ -147,6 +150,8 @@ void MainWindow::stop()
 		fclose(file_out);
 	if (file_out2)
 		fclose(file_out2);
+	if (file_raw_data)
+		fclose(file_raw_data);
 	qDebug("stop");
 }
 

@@ -41,6 +41,7 @@ public:
     double find_max_m(void);
     void anc_dist(void);
 	void WriteToFile(const ANC_MSG* datagram, POINT3D* retPoint, FILE* file);
+	void WriteRawDataToFile(const ANC_MSG* datagram, int anchor_number, double data, FILE* file);
 	inline void setDatagramKalmanCount(int val) { datagramKalmanCount = val; }
 	inline void resetKalmanFilterVariables()
 	{
@@ -70,6 +71,7 @@ protected:
     double anc0dist[ANCHORS_NUMBER];//distance anchor[i] to anchor[0]
 	double ant_delay[ANCHORS_NUMBER];
 	QString file_line_string;
+	QString file_line_string_rawdata;
 
     //координаты приемников
     double u[ANCHORS_NUMBER];
@@ -80,6 +82,7 @@ protected:
     POINT3D* pt2;
     POINT3D* ptRet;
     POINT3D* p3d;
+	POINT3D* ptRawData;
     MainWindow* mainWindow;	
 	KalmanData kalmanData[ANCHORS_NUMBER];
 	int datagramKalmanCount;

@@ -49,8 +49,9 @@ typedef struct
 
 #define XY_DIMENSION 3.04
 #define Z_DIMENSION 2.41
+#define Z_LOW_COORD 0.20
 
-
+#define MARKS_NUMBER 37 //частота опроса датчика, применяется для задания размера массива данных
 
 #endif // DATAGRAM
 

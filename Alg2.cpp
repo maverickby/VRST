@@ -67,6 +67,7 @@ double Alg2::mark_filter(int tag, int anc, double d)
 	return(f[tag][anc] / k);
 }
 
+//обработка датаграммы приемника (якоря)
 bool Alg2::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 {
 	int i;
@@ -102,6 +103,7 @@ bool Alg2::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 	return true;
 }
 
+//подготовка данных и навигационный процесс
 void Alg2::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 {
 	int i, count_anchors_ret;
@@ -443,6 +445,7 @@ int Alg2::R_A_JK(int j, int k)
 	}
 	else
 	{
-		return arrAnchVal[a[j]] - arrAnchVal[a[k]];
+		return arrAnchVal[j] - arrAnchVal[k];
+		//return arrAnchVal[a[j]] - arrAnchVal[a[k]];   --- ошибка !!! неправильные индексы !
 	}
 }

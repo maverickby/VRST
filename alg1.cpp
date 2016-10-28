@@ -56,6 +56,30 @@ double Alg1::mark_filter(int tag, int anc, double d)
 	return(f[tag][anc] / k);
 }
 
+//make simple filter data processing (remove max/min values + make average value)
+int Alg1::processSimpleAverageValFilter(int tag_number)
+{
+	int i;
+	int j = 0;
+
+	for (i = 0; i < ANCHORS_NUMBER; i++)
+	{
+		//if (fabs(m_marks[i]) < XY_DIMENSION)   // if delta > XY_DIMENSION  -  ignore it
+		{
+			m_marks[i] = SimpleAverageValFilter(tag_number);
+
+			j++;
+		}
+	}
+	return(j);
+}
+
+double Alg1::SimpleAverageValFilter(int tag)
+{
+
+	return 0;
+}
+
 //some magic here is
 int Alg1::processKalmanFilter(int tag_number)
 {
@@ -104,8 +128,11 @@ double Alg1::KalmanFilter(int tag, int anc, double d)
 		return kalmanData[anc].Xk;
 }
 
+//обработка датаграммы приемника (якоря)
 bool Alg1::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 {
+	//TODO temp, move to another place !
+	anc_dist();
 	int i;
 	if (datagram->addr == 0)  // first packet in the series, process previous data
 	{
@@ -141,6 +168,7 @@ bool Alg1::ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint)
 	return true;
 }
 
+//подготовка данных и навигационный процесс
 void Alg1::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 {
 	int i, count_anchors_ret;
@@ -149,13 +177,16 @@ void Alg1::process_nav(const ANC_MSG* datagram, POINT3D* retPoint)
 		if (prepare_data(i, datagram))
 		{
 			//make mark filter data processing
-			count_anchors_ret = processMarkFilter(i);
+			//count_anchors_ret = processMarkFilter(i);
 
 			//make Kalman filter data processing
-			//count_anchors_ret = processKalmanFilter(i);
+			count_anchors_ret = processKalmanFilter(i);
 
-			if (count_anchors_ret<4)//wrong situation !
-				return;
+			//make simple filter data processing (remove max/min values + make average value)
+			//count_anchors_ret = processSimpleAverageValFilter(i);
+
+			//if (count_anchors_ret<4)//wrong situation !
+			//	return;
 
 			//call navigation algorithm here
 			retPoint = DirectCalculationMethod(i);
@@ -251,19 +282,21 @@ int Alg1::prepare_data(int tag, const ANC_MSG* datagram)
 
 POINT3D* Alg1::DirectCalculationMethod(int tag)
 {
+	//follow further variables declaration/use for optimization (CPU load)
 	double x, y, z;
 	int l, p, i;
 	double t11, t21, t31, t41, t51, t61, t71, t81;
 	int s, k;
 	int index_anyJ;
 	double u21, u31, u41, v21, v31, v41, w21, w31, w41;
-	double delta21, delta31, delta41, tau12, tau13, tau14, tau32, tau42;
-	double alpha1, alpha2, beta1, beta2, gamma1, gamma2, g1, g2, c;
-	double A, B, C, D, E, F, G, H, I;
-	double zl, xl, yl, xMinus, xPlus, yMinus, yPlus, zMinus, zPlus;
+	long double delta21, delta31, delta41, tau12, tau13, tau14, tau32, tau42;
+	long double alpha1, alpha2, beta1, beta2, gamma1, gamma2, g1, g2, c;
+	long double A, B, C, D, E, F, G, H, I;
+	long double zl, xl, yl, xMinus, xPlus, yMinus, yPlus, zMinus, zPlus;
 
 	//здесь разницы времен получения сигнала от маяка до i-го передатчика относительно
-	//первого передатчика, в секундах
+	//первого передатчика, в секундах 
+	//ti - t0, где ti - задержка i-го передатчика, t0 - задержка 0-го передатчика	
 	t11 = m_marks[0];
 	t21 = m_marks[1];
 	t31 = m_marks[2];
@@ -312,7 +345,7 @@ POINT3D* Alg1::DirectCalculationMethod(int tag)
 		k = 1;
 
 		//17
-		//для каждого j?{a[1]; a[2]; a[3]; a[4]}\{a[s]}
+		//для каждого j, принадлежащего множеству {a[1]; a[2]; a[3]; a[4]}\{a[s]}
 		getarrJinAExcludeAs(s);// get arrJ[] here
 		for (int x = 0; x<3; x++)//0..2 потому что множество элементов a[] минус a[s]
 		{
@@ -440,7 +473,7 @@ POINT3D* Alg1::DirectCalculationMethod(int tag)
 		ptRet->y = 0;
 		ptRet->z = 0;
 
-		if (Pair_Analyzing(pt1, pt2, ptRet) == 0)
+		if (Pair_Analyzing(pt1, pt2, ptRet) == false)
 			goto step102;
 
 		l++;
@@ -450,15 +483,15 @@ POINT3D* Alg1::DirectCalculationMethod(int tag)
 		y += ptRet->y;
 		z += ptRet->z;
 
-	step102: if (a[3] == 7)
-		p--;
-			 else
-				 p = 3;
-			 if (p >= 0)
-			 {
-				 for (int i = 3; i >= p; i--)
-					 a[i] = a[p] + i - p + 1;
-			 }
+step102:if (a[3] == 7)
+			p--;
+		else
+			p = 3;
+		if (p >= 0)
+		{
+			for (int i = 3; i >= p; i--)
+				a[i] = a[p] + i - p + 1;
+		}
 
 	}//end while
 

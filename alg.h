@@ -63,6 +63,10 @@ protected:
     POINT3D anchor[ANCHORS_NUMBER];						// anchor positions (m)
     POINT3D tag[TAGS_NUMBER];							// calculated tags coordinates
 
+	int64 arrMarksOneCycle[MARKS_NUMBER][TAGS_NUMBER][ANCHORS_NUMBER];//массив для хранения отметок за весь секундный цикл опроса датчиков
+	
+
+
 	double arrAnchVal[ANCHORS_NUMBER];//массив РАЗНОСТЕЙ задержек времен прихода сигналов / массив РАЗНОСТЕЙ расстояний приемников сигналов
     int a[4];//массив для хранения текущей комбинации 4 из 8 (номера четырех текущих приемников сигнала)
              //(4-х элементное подмножество из множества чисел {1...8}) 

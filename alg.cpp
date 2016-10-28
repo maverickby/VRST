@@ -17,14 +17,24 @@ Alg::Alg(MainWindow* wnd)
 
 void Alg::init()
 {
-    u[0]=0;    v[0] =0;    w[0] =Z_DIMENSION;	
-	u[1]=0; v[1] = XY_DIMENSION;    w[1] =Z_DIMENSION;
-	u[2]=XY_DIMENSION; v[2] =XY_DIMENSION; w[2] =Z_DIMENSION;
-	u[3]= XY_DIMENSION;    v[3] =0; w[3] =Z_DIMENSION;
-    u[4]=0;    v[4] =0;    w[4] =0;
-	u[5]=0; v[5] = XY_DIMENSION;    w[5] =0;
-	u[6]= XY_DIMENSION; v[6] = XY_DIMENSION; w[6] =0;
-	u[7]= XY_DIMENSION;    v[7]= 0; w[7] =0;
+    u[0]= 0;            v[0] = 0;            w[0] = Z_DIMENSION;	
+	u[1]= XY_DIMENSION; v[1] = 0;            w[1] = Z_DIMENSION;
+	u[2]=XY_DIMENSION;  v[2] = XY_DIMENSION; w[2] = Z_DIMENSION;
+	u[3]= 0;            v[3] = XY_DIMENSION; w[3] = Z_DIMENSION;
+    u[4]=0;             v[4] = 0;            w[4] = Z_LOW_COORD;
+	u[5]= XY_DIMENSION; v[5] = 0;            w[5] = Z_LOW_COORD;
+	u[6]= XY_DIMENSION; v[6] = XY_DIMENSION; w[6] = Z_LOW_COORD;
+	u[7]= 0;            v[7]= XY_DIMENSION;  w[7] = Z_LOW_COORD;
+
+	anchor[0].x = 0;            anchor[0].y = 0;            anchor[0].z = Z_DIMENSION;
+	anchor[1].x = XY_DIMENSION; anchor[1].y = 0;            anchor[1].z = Z_DIMENSION;
+	anchor[2].x = XY_DIMENSION; anchor[2].y = XY_DIMENSION; anchor[2].z = Z_DIMENSION;
+	anchor[3].x = 0;            anchor[3].y = XY_DIMENSION; anchor[3].z = Z_DIMENSION;
+	anchor[4].x = 0;            anchor[4].y = 0;            anchor[4].z = Z_LOW_COORD;
+	anchor[5].x = XY_DIMENSION; anchor[5].y = 0;            anchor[5].z = Z_LOW_COORD;
+	anchor[6].x = XY_DIMENSION; anchor[6].y = XY_DIMENSION; anchor[6].z = Z_LOW_COORD;
+	anchor[7].x = 0;            anchor[7].y = XY_DIMENSION; anchor[7].z = Z_LOW_COORD;
+
 
 	ant_delay[0] = 0.01;
 	ant_delay[1] = 0.08;
@@ -51,9 +61,9 @@ void Alg::init()
     adj = 0;
     memset(t_marks, 0, sizeof(t_marks));//clear trash in the array (marks)
     memset(m_marks, 0, sizeof(m_marks));//clear trash in the array
-    memset(anc0dist, 0, sizeof(anc0dist));//clear trash in the array
+    //memset(anc0dist, 0, sizeof(anc0dist));//clear trash in the array
 
-    memset(anchor, 0, sizeof(anchor));//clear trash in the array
+    //memset(anchor, 0, sizeof(anchor));//clear trash in the array
     memset(tag, 0, sizeof(tag));//clear trash in the array
     memset(a, 0, sizeof(a));//clear trash in the array
 
@@ -227,8 +237,13 @@ bool Alg::Pair_Analyzing(const POINT3D* pt1,const POINT3D* pt2, POINT3D* ptRet)
         }
     }
     step22:
-    if( (s1==1 && s2==1) || (s1==0 && s2==0))
-        return false;
+	if ((s1 == 1 && s2 == 1) || (s1 == 0 && s2 == 0))
+	{
+		ptRet->x = 0;
+		ptRet->y = 0;
+		ptRet->z = 0;
+		return false;
+	}
     if(s1==1 && s2==0)
     {
         ptRet->x=pt2->x;

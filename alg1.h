@@ -29,11 +29,13 @@ public:
 	virtual bool ProcessAnchorDatagram(const ANC_MSG* datagram, POINT3D* retPoint);
 	virtual void process_nav(const ANC_MSG* datagram, POINT3D* retPoint);
 	int processMarkFilter(int tag_number);
+	int processSimpleAverageValFilter(int tag_number);
 	double mark_filter(int tag, int anc, double d);
 
 	virtual int processKalmanFilter(int tag_number);
 	//фильтр Калмана
 	virtual double KalmanFilter(int tag, int anc, double d);
+	double SimpleAverageValFilter(int tag);
 
 	virtual int prepare_data(int tag, const ANC_MSG* datagram);
 	virtual int prepare_data(int tag);
